@@ -1,0 +1,5942 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BNB Application Portal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 128 128%27%3E%3Crect width=%27128%27 height=%27128%27 rx=%2728%27 fill=%27%230f172a%27/%3E%3Crect x=%2718%27 y=%2718%27 width=%2792%27 height=%2792%27 rx=%2722%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M35 83V45h11l9 18 9-18h11v38H65V59l-10 18h-2L43 59v24H35Zm47 0V45h15c11 0 18 8 18 19s-7 19-18 19H82Zm10-9h5c5 0 8-4 8-10s-3-10-8-10h-5v20Z%27 fill=%27white%27/%3E%3C/svg%3E">
+
+  <meta
+    name="description"
+    content="Portal Aplikasi Internal - Pusat akses seluruh aplikasi internal."
+  >
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+
+      --text: #111827;
+      --text-secondary: #6b7280;
+      --muted: #9ca3af;
+
+      --border: #e5e7eb;
+      --bg: #f5f7fb;
+      --white: #ffffff;
+
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.09);
+      --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.14);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1400px;
+      min-height: 76px;
+
+      margin: 0 auto;
+      padding: 14px 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background: var(--primary);
+      color: white;
+
+      font-size: 22px;
+      font-weight: 700;
+
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-subtitle {
+      margin-top: 2px;
+
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .admin-header-btn {
+      min-height: 40px;
+
+      padding: 0 15px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: white;
+      color: var(--text);
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      font-size: 13px;
+      font-weight: 650;
+
+      transition:
+        background 0.2s,
+        border-color 0.2s,
+        color 0.2s;
+    }
+
+    .admin-header-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* =====================================================
+       MAIN
+    ====================================================== */
+
+    .main {
+      max-width: 1400px;
+
+      margin: 0 auto;
+      padding: 34px 24px 50px;
+    }
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+
+      line-height: 1.15;
+
+      font-weight: 850;
+
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      max-width: 720px;
+
+      margin-top: 9px;
+
+      color: var(--text-secondary);
+
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* =====================================================
+       TOOLBAR
+    ====================================================== */
+
+    .toolbar {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        220px;
+
+      gap: 12px;
+
+      margin-bottom: 25px;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+
+      left: 15px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: #9ca3af;
+
+      font-size: 18px;
+
+      pointer-events: none;
+    }
+
+    .search-input,
+    .category-select {
+      width: 100%;
+      height: 48px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: white;
+      color: var(--text);
+
+      outline: none;
+
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+    }
+
+    .search-input {
+      padding: 0 15px 0 44px;
+    }
+
+    .category-select {
+      padding: 0 14px;
+    }
+
+    .search-input:focus,
+    .category-select:focus,
+    .form-control:focus {
+      border-color: var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.10);
+    }
+
+    /* =====================================================
+       APPLICATION GRID
+    ====================================================== */
+
+    .app-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .app-card {
+      min-height: 235px;
+
+      padding: 20px;
+
+      background: white;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      box-shadow: var(--shadow-sm);
+
+      display: flex;
+      flex-direction: column;
+
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        border-color 0.2s;
+    }
+
+    .app-card:hover {
+      transform: translateY(-3px);
+
+      box-shadow: var(--shadow-md);
+
+      border-color: #d5def2;
+    }
+
+    .app-card-top {
+      display: flex;
+
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+    .app-icon {
+      width: 54px;
+      height: 54px;
+
+      border-radius: 14px;
+
+      background: var(--primary-light);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 27px;
+
+      flex-shrink: 0;
+    }
+
+    .status-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+    .status-active {
+      color: #15803d;
+      background: #dcfce7;
+    }
+
+    .status-maintenance {
+      color: #b45309;
+      background: #fef3c7;
+    }
+
+    .status-coming {
+      color: #475569;
+      background: #e2e8f0;
+    }
+
+    .app-card h3 {
+      margin-top: 17px;
+
+      font-size: 17px;
+
+      line-height: 1.3;
+
+      font-weight: 750;
+    }
+
+    .app-category {
+      margin-top: 5px;
+
+      color: var(--primary);
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .app-description {
+      margin-top: 10px;
+
+      color: var(--text-secondary);
+
+      font-size: 13px;
+      line-height: 1.55;
+
+      display: -webkit-box;
+
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+
+      overflow: hidden;
+    }
+
+    .app-card-bottom {
+      margin-top: auto;
+      padding-top: 18px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+    }
+
+    .app-version {
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       BUTTONS
+    ====================================================== */
+
+    .btn {
+      min-height: 39px;
+
+      padding: 0 14px;
+
+      border: 0;
+      border-radius: 9px;
+
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      transition:
+        background 0.2s,
+        transform 0.15s;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .btn-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #fee2e2;
+    }
+
+    .btn-success {
+      background: var(--success-light);
+      color: var(--success);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #dcfce7;
+    }
+
+    /* =====================================================
+       STATE
+    ====================================================== */
+
+    .state-box {
+      min-height: 260px;
+
+      padding: 35px;
+
+      background: white;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+    }
+
+    .state-icon {
+      margin-bottom: 13px;
+
+      font-size: 42px;
+    }
+
+    .state-box h3 {
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .state-box p {
+      max-width: 520px;
+
+      margin-top: 7px;
+
+      color: var(--text-secondary);
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .loading-spinner {
+      width: 35px;
+      height: 35px;
+
+      margin-bottom: 15px;
+
+      border: 3px solid #dbeafe;
+      border-top-color: var(--primary);
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =====================================================
+       FOOTER
+    ====================================================== */
+
+    .footer {
+      padding: 24px;
+
+      color: var(--muted);
+
+      text-align: center;
+
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       MODAL
+    ====================================================== */
+
+    .modal-overlay {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      padding: 20px;
+
+      background:
+        rgba(15, 23, 42, 0.58);
+
+      backdrop-filter: blur(4px);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(460px, 100%);
+
+      max-height:
+        calc(100vh - 40px);
+
+      overflow-y: auto;
+
+      background: white;
+
+      border-radius: 18px;
+
+      box-shadow: var(--shadow-lg);
+
+      animation:
+        modalIn 0.18s ease-out;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(10px)
+          scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 22px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: #f3f4f6;
+      color: #4b5563;
+
+      font-size: 19px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: #e5e7eb;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .modal-footer {
+      padding: 17px 22px;
+
+      border-top:
+        1px solid var(--border);
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 9px;
+    }
+
+    /* =====================================================
+       LOGIN
+    ====================================================== */
+
+    .login-info {
+      margin-bottom: 22px;
+
+      text-align: center;
+    }
+
+    .login-icon {
+      width: 58px;
+      height: 58px;
+
+      margin: 0 auto 13px;
+
+      border-radius: 15px;
+
+      background: var(--primary-light);
+      color: var(--primary);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      font-size: 27px;
+    }
+
+    .login-info h3 {
+      font-size: 20px;
+    }
+
+    .login-info p {
+      margin-top: 5px;
+
+      color: var(--text-secondary);
+
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       FORM
+    ====================================================== */
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #374151;
+
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .form-control {
+      width: 100%;
+
+      min-height: 43px;
+
+      padding: 0 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: white;
+      color: var(--text);
+
+      outline: none;
+    }
+
+    textarea.form-control {
+      min-height: 90px;
+
+      padding: 11px 12px;
+
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 12px;
+    }
+
+    .form-help {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .checkbox-row {
+      margin-top: 5px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      color: #374151;
+
+      font-size: 13px;
+    }
+
+    .checkbox-row input {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* =====================================================
+       ADMIN DASHBOARD
+    ====================================================== */
+
+    .admin-modal {
+      width: min(1200px, 100%);
+    }
+
+    .admin-dashboard-body {
+      padding: 20px 22px 24px;
+    }
+
+    .admin-top-actions {
+      margin-bottom: 18px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+    .admin-top-actions-left,
+    .admin-top-actions-right {
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+    }
+
+    .admin-user {
+      margin-top: 3px;
+
+      color: var(--text-secondary);
+
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       STATS
+    ====================================================== */
+
+    .stats-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 12px;
+
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+
+      border:
+        1px solid transparent;
+
+      border-radius: 12px;
+
+      background: #fafafa;
+    }
+
+    /* Colorful admin dashboard statistic cards */
+    .stat-card:nth-child(1) {
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+      border-color: #bfdbfe;
+    }
+
+    .stat-card:nth-child(2) {
+      background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+      border-color: #bbf7d0;
+    }
+
+    .stat-card:nth-child(3) {
+      background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+      border-color: #fde68a;
+    }
+
+    .stat-card:nth-child(4) {
+      background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+      border-color: #fecaca;
+    }
+
+    .stat-card:nth-child(1) .stat-label,
+    .stat-card:nth-child(1) .stat-value {
+      color: #1d4ed8;
+    }
+
+    .stat-card:nth-child(2) .stat-label,
+    .stat-card:nth-child(2) .stat-value {
+      color: #15803d;
+    }
+
+    .stat-card:nth-child(3) .stat-label,
+    .stat-card:nth-child(3) .stat-value {
+      color: #b45309;
+    }
+
+    .stat-card:nth-child(4) .stat-label,
+    .stat-card:nth-child(4) .stat-value {
+      color: #b91c1c;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .stat-value {
+      margin-top: 5px;
+
+      font-size: 24px;
+      font-weight: 850;
+    }
+
+    .admin-filter-bar {
+      display: grid;
+      grid-template-columns: minmax(250px, 1fr) 190px 170px auto;
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .admin-filter-search {
+      position: relative;
+    }
+
+    .admin-filter-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    .admin-filter-input,
+    .admin-filter-select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid #dbe3ee;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #111827;
+      outline: none;
+      padding: 0 12px;
+    }
+
+    .admin-filter-input {
+      padding-left: 34px;
+    }
+
+    .admin-filter-input:focus,
+    .admin-filter-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+    }
+
+    .admin-filter-summary {
+      min-height: 20px;
+      margin-bottom: 10px;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       ADMIN TABLE
+    ====================================================== */
+
+    .admin-table-wrapper {
+      overflow-x: auto;
+
+      background: white;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+    }
+
+    .admin-table {
+      width: 100%;
+
+      min-width: 900px;
+
+      border-collapse: collapse;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 12px 13px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      text-align: left;
+
+      font-size: 12px;
+
+      vertical-align: middle;
+    }
+
+    .admin-table th {
+      background: #f8fafc;
+
+      color: #475569;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+    .admin-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .admin-table tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .table-app-name {
+      font-weight: 750;
+    }
+
+    .table-app-category {
+      margin-top: 3px;
+
+      color: var(--text-secondary);
+
+      font-size: 11px;
+
+      max-width: 300px;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .table-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      flex-wrap: wrap;
+    }
+
+    .table-btn {
+      min-height: 31px;
+
+      padding: 0 9px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 7px;
+
+      background: white;
+
+      color: #374151;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .table-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .table-btn-danger {
+      color: var(--danger);
+
+      background:
+        var(--danger-light);
+
+      border-color:
+        #fecaca;
+    }
+
+    .table-btn-success {
+      color: var(--success);
+
+      background:
+        var(--success-light);
+
+      border-color:
+        #bbf7d0;
+    }
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    .toast-container {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      z-index: 3000;
+
+      width:
+        min(380px, calc(100vw - 40px));
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 13px 15px;
+
+      border-radius: 10px;
+
+      background: #111827;
+      color: white;
+
+      box-shadow: var(--shadow-md);
+
+      font-size: 12px;
+      line-height: 1.45;
+
+      animation:
+        toastIn 0.2s ease-out;
+
+      transition:
+        opacity 0.2s,
+        transform 0.2s;
+    }
+
+    .toast.success {
+      background: #166534;
+    }
+
+    .toast.error {
+      background: #991b1b;
+    }
+
+    .toast.warning {
+      background: #92400e;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0);
+      }
+    }
+
+    /* =====================================================
+       BNB BRANDING + MOBILE POLISH
+    ====================================================== */
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: transparent;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+      overflow: hidden;
+    }
+
+    .brand-logo svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .brand-title {
+      text-transform: uppercase;
+      letter-spacing: 0.45px;
+    }
+
+    .brand-subtitle {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .topbar-inner {
+        min-height: 68px;
+        padding: 10px 14px;
+        gap: 10px;
+      }
+
+      .brand {
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+      }
+
+      .brand-title {
+        font-size: 15px;
+        line-height: 1.15;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 310px);
+      }
+
+      .brand-subtitle {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 310px);
+      }
+
+      .admin-header-btn {
+        min-height: 38px;
+        padding: 0 11px;
+        font-size: 12px;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .main {
+        padding: 22px 14px 34px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .topbar-inner {
+        align-items: center;
+      }
+
+      .brand-title {
+        font-size: 13px;
+        max-width: calc(100vw - 120px);
+      }
+
+      .brand-subtitle {
+        display: block;
+        font-size: 10px;
+        max-width: calc(100vw - 120px);
+      }
+
+      .admin-header-btn {
+        width: 40px;
+        min-width: 40px;
+        padding: 0;
+        font-size: 0;
+        gap: 0;
+      }
+
+      .admin-header-btn::before {
+        content: "🔐";
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .brand-title {
+        font-size: 12px;
+        max-width: calc(100vw - 108px);
+      }
+
+      .brand-logo {
+        width: 38px;
+        height: 38px;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      button,
+      select,
+      input,
+      textarea {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .admin-header-btn,
+      .btn,
+      .table-btn,
+      .icon-quick-btn,
+      .color-swatch {
+        min-height: 40px;
+      }
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 1150px) {
+
+      .app-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+    }
+
+    @media (max-width: 850px) {
+
+      .app-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .admin-top-actions {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .topbar-inner {
+        padding: 12px 15px;
+      }
+
+      .main {
+        padding:
+          25px 15px 40px;
+      }
+
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+      .modal-overlay {
+        padding: 10px;
+      }
+
+      .admin-dashboard-body,
+      .modal-body {
+        padding: 17px;
+      }
+
+      .modal-header,
+      .modal-footer {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+    }
+
+    /* =====================================================
+       PORTAL THEME - DARK ELEGANT + BRIGHT APP COLORS
+    ====================================================== */
+
+    :root {
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --primary-light: #dbeafe;
+      --text: #eef2ff;
+      --text-secondary: #94a3b8;
+      --muted: #64748b;
+      --border: #26344f;
+      --bg: #0b1020;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 85% 0%, rgba(59,130,246,.10), transparent 28%),
+        radial-gradient(circle at 0% 0%, rgba(139,92,246,.09), transparent 24%),
+        #0b1020;
+      color: #eef2ff;
+    }
+
+    .topbar {
+      background: rgba(15,23,42,.90);
+      border-bottom-color: #1f2a44;
+    }
+
+    .brand-title {
+      color: #f8fafc;
+    }
+
+    .brand-subtitle,
+    .hero p {
+      color: #94a3b8;
+    }
+
+    .admin-header-btn {
+      background: #111827;
+      border-color: #334155;
+      color: #e5e7eb;
+    }
+
+    .admin-header-btn:hover {
+      background: rgba(59,130,246,.12);
+      border-color: #60a5fa;
+      color: #bfdbfe;
+    }
+
+    .search-input,
+    .category-select {
+      background: #111827;
+      border-color: #334155;
+      color: #e5e7eb;
+    }
+
+    .search-input::placeholder {
+      color: #64748b;
+    }
+
+    /* ADMIN FORM: keep input text readable on the light modal */
+    .modal .form-control,
+    .modal .form-control:focus,
+    .modal select.form-control,
+    .modal textarea.form-control {
+      background: #ffffff;
+      color: #111827;
+      border-color: #334155;
+    }
+
+    .modal .form-control::placeholder {
+      color: #94a3b8;
+      opacity: 1;
+    }
+
+    .modal .form-label {
+      color: #1f2937;
+    }
+
+    .app-card {
+      --app-color: #3b82f6;
+      /* Gunakan warna aplikasi di seluruh permukaan card, bukan hanya garis atas. */
+      background: linear-gradient(145deg,
+        color-mix(in srgb, var(--app-color) 22%, #ffffff),
+        color-mix(in srgb, var(--app-color) 9%, #ffffff)
+      );
+      color: #0f172a;
+      border-color: color-mix(in srgb, var(--app-color) 38%, #cbd5e1);
+      border-top: 4px solid var(--app-color);
+      box-shadow: 0 10px 28px rgba(2,6,23,.28);
+    }
+
+    .app-card h3 {
+      color: #0f172a;
+    }
+
+    .app-description {
+      color: #475569;
+    }
+
+    .app-version {
+      color: #64748b;
+    }
+
+    .app-card:hover {
+      border-color: color-mix(in srgb, var(--app-color) 58%, #cbd5e1);
+      box-shadow: 0 18px 40px color-mix(in srgb, var(--app-color) 22%, rgba(2,6,23,.35));
+    }
+
+    .app-icon {
+      background: color-mix(in srgb, var(--app-color) 16%, #ffffff);
+      color: var(--app-color);
+      border-color: color-mix(in srgb, var(--app-color) 24%, #ffffff);
+    }
+
+    .app-category {
+      color: var(--app-color);
+    }
+
+    .state-box {
+      background: rgba(17,24,39,.90);
+      border-color: #26344f;
+      color: #e5e7eb;
+    }
+
+    .state-box p {
+      color: #94a3b8;
+    }
+
+    .footer {
+      color: #64748b;
+    }
+
+    .modal {
+      background: #ffffff;
+      color: #111827;
+    }
+
+    .form-label,
+    .checkbox-row {
+      color: #374151;
+    }
+
+    .icon-picker-row,
+    .color-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .icon-preview {
+      width: 43px;
+      height: 43px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ee;
+      background: #f8fafc;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .icon-quick-list,
+    .color-palette {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .icon-quick-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #dbe3ee;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-quick-btn:hover,
+    .icon-quick-btn.selected {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .color-swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #d6dce7;
+      padding: 0;
+    }
+
+    .color-swatch.selected {
+      box-shadow: 0 0 0 2px #111827, 0 0 0 4px #fff;
+    }
+
+    .custom-color-input {
+      width: 42px;
+      height: 32px;
+      padding: 2px;
+      border: 1px solid #dbe3ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .admin-filter-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .admin-filter-reset {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .admin-filter-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =====================================================
+       FINAL MOBILE OPTIMIZATION
+    ====================================================== */
+
+    @media (max-width: 640px) {
+      .brand-title {
+        max-width: calc(100vw - 122px);
+      }
+
+      .brand-subtitle {
+        max-width: calc(100vw - 122px);
+      }
+
+      .hero h1 {
+        font-size: clamp(24px, 7vw, 34px);
+        line-height: 1.15;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+
+      .search-input,
+      .category-select {
+        height: 46px;
+        font-size: 14px;
+      }
+
+      .app-card {
+        min-height: 210px;
+        padding: 17px;
+      }
+
+      .app-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 13px;
+        font-size: 24px;
+      }
+
+      .app-card h3 {
+        font-size: 17px;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .app-description {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .modal {
+        width: 100%;
+        max-height: calc(100vh - 20px);
+        border-radius: 14px;
+      }
+
+      .admin-modal {
+        width: 100%;
+      }
+
+      .modal-header {
+        min-height: 58px;
+      }
+
+      .modal-header h2 {
+        font-size: 16px;
+      }
+
+      .admin-dashboard-body {
+        overflow-x: hidden;
+      }
+
+      .admin-top-actions {
+        align-items: stretch;
+      }
+
+      .admin-top-actions-left,
+      .admin-top-actions-right {
+        width: 100%;
+      }
+
+      .admin-top-actions-left .btn,
+      .admin-top-actions-right .btn {
+        flex: 1 1 auto;
+      }
+
+      .admin-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 10px;
+      }
+
+      .admin-table {
+        min-width: 760px;
+      }
+
+      .modal-footer {
+        gap: 8px;
+      }
+
+      .modal-footer .btn {
+        min-height: 42px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .brand-title {
+        font-size: 11.5px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .main {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .app-card {
+        min-height: 200px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="topbar">
+
+    <div class="topbar-inner">
+
+      <div class="brand">
+
+        <div class="brand-icon brand-logo" aria-label="BNB Application Portal logo">
+          <svg viewBox="0 0 128 128" role="img" aria-hidden="true">
+            <defs>
+              <linearGradient id="zipperBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2563eb"/>
+                <stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient>
+              <linearGradient id="zipperMetal" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f8fafc"/>
+                <stop offset="55%" stop-color="#cbd5e1"/>
+                <stop offset="100%" stop-color="#94a3b8"/>
+              </linearGradient>
+            </defs>
+
+            <rect x="6" y="6" width="116" height="116" rx="28" fill="url(#zipperBg)"/>
+            <rect x="31" y="24" width="12" height="74" rx="6" fill="rgba(255,255,255,0.22)"/>
+            <rect x="85" y="24" width="12" height="74" rx="6" fill="rgba(255,255,255,0.22)"/>
+
+            <g fill="url(#zipperMetal)">
+              <rect x="39" y="28" width="14" height="8" rx="2" transform="rotate(10 46 32)"/>
+              <rect x="75" y="28" width="14" height="8" rx="2" transform="rotate(-10 82 32)"/>
+              <rect x="39" y="42" width="14" height="8" rx="2" transform="rotate(10 46 46)"/>
+              <rect x="75" y="42" width="14" height="8" rx="2" transform="rotate(-10 82 46)"/>
+              <rect x="39" y="56" width="14" height="8" rx="2" transform="rotate(10 46 60)"/>
+              <rect x="75" y="56" width="14" height="8" rx="2" transform="rotate(-10 82 60)"/>
+              <rect x="39" y="70" width="14" height="8" rx="2" transform="rotate(10 46 74)"/>
+              <rect x="75" y="70" width="14" height="8" rx="2" transform="rotate(-10 82 74)"/>
+              <rect x="39" y="84" width="14" height="8" rx="2" transform="rotate(10 46 88)"/>
+              <rect x="75" y="84" width="14" height="8" rx="2" transform="rotate(-10 82 88)"/>
+            </g>
+
+            <path d="M54 28h20c5 0 9 4 9 9v7c0 5-4 9-9 9H54c-5 0-9-4-9-9v-7c0-5 4-9 9-9Z" fill="url(#zipperMetal)"/>
+            <circle cx="64" cy="39" r="5" fill="#64748b"/>
+            <path d="M57 52h14l7 17H50l7-17Z" fill="url(#zipperMetal)"/>
+            <path d="M64 69v29" stroke="#e2e8f0" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <div class="brand-title">BNB APPLICATION PORTAL</div>
+          <div class="brand-subtitle">Pusat Akses Aplikasi Internal</div>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="admin-header-btn"
+        id="adminLoginButton"
+      >
+        🔐 Admin
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main class="main">
+
+    <section class="hero">
+
+      <h1>
+        Semua Aplikasi Internal
+      </h1>
+
+      <p>
+        Akses seluruh aplikasi internal perusahaan
+        melalui satu portal. Pilih aplikasi yang ingin digunakan.
+      </p>
+
+    </section>
+
+
+    <!-- ===================================================
+         SEARCH & FILTER
+    ==================================================== -->
+
+    <section class="toolbar">
+
+      <div class="search-wrapper">
+
+        <span class="search-icon">
+          ⌕
+        </span>
+
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+          placeholder="Cari nama aplikasi, kategori, atau keyword..."
+          autocomplete="off"
+        >
+
+      </div>
+
+      <select
+        id="categoryFilter"
+        class="category-select"
+      >
+
+        <option value="">
+          Semua Kategori
+        </option>
+
+      </select>
+
+    </section>
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section id="contentArea">
+
+      <!-- LOADING -->
+
+      <div
+        class="state-box"
+        id="loadingState"
+      >
+
+        <div class="loading-spinner"></div>
+
+        <h3>
+          Memuat aplikasi...
+        </h3>
+
+        <p>
+          Sedang mengambil daftar aplikasi dari server.
+        </p>
+
+      </div>
+
+
+      <!-- APPLICATION GRID -->
+
+      <div
+        class="app-grid"
+        id="appGrid"
+        style="display:none;"
+      ></div>
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="state-box"
+        id="emptyState"
+        style="display:none;"
+      >
+
+        <div class="state-icon">
+          📂
+        </div>
+
+        <h3>
+          Belum ada aplikasi
+        </h3>
+
+        <p>
+          Belum ada aplikasi yang tersedia di portal.
+          Admin dapat menambahkan aplikasi melalui Dashboard Admin.
+        </p>
+
+      </div>
+
+
+      <!-- NO SEARCH RESULT -->
+
+      <div
+        class="state-box"
+        id="noSearchState"
+        style="display:none;"
+      >
+
+        <div class="state-icon">
+          🔎
+        </div>
+
+        <h3>
+          Aplikasi tidak ditemukan
+        </h3>
+
+        <p>
+          Tidak ada aplikasi yang sesuai dengan
+          pencarian atau kategori yang dipilih.
+        </p>
+
+      </div>
+
+
+      <!-- ERROR -->
+
+      <div
+        class="state-box"
+        id="errorState"
+        style="display:none;"
+      >
+
+        <div class="state-icon">
+          ⚠️
+        </div>
+
+        <h3>
+          Gagal memuat aplikasi
+        </h3>
+
+        <p id="errorMessage">
+          Terjadi kesalahan saat mengambil data.
+        </p>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="retryButton"
+          style="margin-top:16px;"
+        >
+          ↻ Coba Lagi
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="footer">
+
+    Portal Aplikasi Internal ©
+    <span id="currentYear"></span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       ADMIN LOGIN MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="loginModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2>
+          Login Admin
+        </h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          data-close-modal="loginModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="login-info">
+
+          <div class="login-icon">
+            🔐
+          </div>
+
+          <h3>
+            Administrator
+          </h3>
+
+          <p>
+            Login menggunakan akun admin
+            yang terdaftar di Firebase.
+          </p>
+
+        </div>
+
+
+        <form id="loginForm">
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="loginEmail"
+            >
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-control"
+              placeholder="admin@perusahaan.com"
+              autocomplete="username"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="loginPassword"
+            >
+              Password
+            </label>
+
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-control"
+              placeholder="Masukkan password"
+              autocomplete="current-password"
+              required
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="loginSubmitButton"
+            style="width:100%;"
+          >
+            🔑 Login
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       ADMIN DASHBOARD
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="adminModal"
+  >
+
+    <div class="modal admin-modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            Dashboard Admin
+          </h2>
+
+          <div
+            class="admin-user"
+            id="adminUserLabel"
+          >
+            -
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeAdminButton"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="admin-dashboard-body">
+
+        <!-- TOP ACTION -->
+
+        <div class="admin-top-actions">
+
+          <div class="admin-top-actions-left">
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="addApplicationButton"
+            >
+              ＋ Tambah Aplikasi
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="refreshAdminButton"
+            >
+              ↻ Refresh
+            </button>
+
+          </div>
+
+
+          <div class="admin-top-actions-right">
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="logoutButton"
+            >
+              Keluar
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Total Aplikasi
+            </div>
+
+            <div
+              class="stat-value"
+              id="statTotal"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Tersedia
+            </div>
+
+            <div
+              class="stat-value"
+              id="statActive"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Maintenance
+            </div>
+
+            <div
+              class="stat-value"
+              id="statMaintenance"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Tersembunyi
+            </div>
+
+            <div
+              class="stat-value"
+              id="statInactive"
+            >
+              0
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ADMIN FILTERS -->
+
+        <div class="admin-filter-bar">
+
+          <div class="admin-filter-search">
+            <span class="admin-filter-icon">⌕</span>
+            <input
+              type="search"
+              id="adminSearchInput"
+              class="admin-filter-input"
+              placeholder="Cari nama aplikasi, kategori, atau URL..."
+              autocomplete="off"
+            >
+          </div>
+
+          <select id="adminCategoryFilter" class="admin-filter-select">
+            <option value="">Semua Kategori</option>
+          </select>
+
+          <select id="adminStatusFilter" class="admin-filter-select">
+            <option value="">Semua Status</option>
+            <option value="Aktif">Aktif</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Coming Soon">Coming Soon</option>
+          </select>
+
+          <button
+            type="button"
+            class="btn btn-secondary admin-filter-reset"
+            id="resetAdminFilterButton"
+          >
+            Reset
+          </button>
+
+        </div>
+
+        <div class="admin-filter-summary" id="adminFilterSummary"></div>
+
+        <!-- ADMIN TABLE -->
+
+        <div class="admin-table-wrapper">
+
+          <table class="admin-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  No
+                </th>
+
+                <th>
+                  Aplikasi
+                </th>
+
+                <th>
+                  Kategori
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Versi
+                </th>
+
+                <th>
+                  Urutan
+                </th>
+
+                <th>
+                  Publikasi
+                </th>
+
+                <th>
+                  Aksi
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody
+              id="adminTableBody"
+            ></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       APPLICATION FORM
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="applicationFormModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2 id="applicationFormTitle">
+          Tambah Aplikasi
+        </h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          data-close-modal="applicationFormModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="applicationForm">
+
+        <div class="modal-body">
+
+          <input
+            type="hidden"
+            id="applicationId"
+          >
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="applicationName"
+            >
+              Nama Aplikasi *
+            </label>
+
+            <input
+              type="text"
+              id="applicationName"
+              class="form-control"
+              maxlength="100"
+              placeholder="Contoh: Stock ATK"
+              required
+            >
+
+          </div>
+
+
+          <!-- CATEGORY + ICON -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationCategory"
+              >
+                Kategori *
+              </label>
+
+              <input
+                type="text"
+                id="applicationCategory"
+                class="form-control"
+                maxlength="50"
+                placeholder="Inventory"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationIcon"
+              >
+                Icon Aplikasi
+              </label>
+
+              <div class="icon-picker-row">
+                <div class="icon-preview" id="applicationIconPreview">📱</div>
+                <input
+                  type="text"
+                  id="applicationIcon"
+                  class="form-control"
+                  maxlength="10"
+                  placeholder="📦"
+                  aria-label="Icon aplikasi"
+                >
+              </div>
+
+              <div class="icon-quick-list" id="iconQuickList">
+                <button type="button" class="icon-quick-btn" data-icon-choice="📦">📦</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="📄">📄</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="🧾">🧾</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="🛒">🛒</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="💰">💰</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="📊">📊</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="📋">📋</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="🔧">🔧</button>
+                <button type="button" class="icon-quick-btn" data-icon-choice="⚙️">⚙️</button>
+              </div>
+
+              <div class="form-help">Pilih icon cepat atau ketik emoji lain.</div>
+
+            </div>
+
+          </div>
+
+
+          <!-- COLOR -->
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="applicationThemeColor"
+            >
+              Warna Aplikasi
+            </label>
+
+            <div class="color-picker-row">
+              <input
+                type="color"
+                id="applicationThemeColor"
+                class="custom-color-input"
+                value="#3B82F6"
+                title="Pilih warna aplikasi"
+              >
+
+              <span
+                id="applicationThemeColorLabel"
+                class="form-help"
+                style="margin-top:0;"
+              >
+                #3B82F6
+              </span>
+            </div>
+
+            <div class="color-palette" id="colorPalette">
+              <button type="button" class="color-swatch" data-color-choice="#3B82F6" style="background:#3B82F6" title="Biru"></button>
+              <button type="button" class="color-swatch" data-color-choice="#10B981" style="background:#10B981" title="Hijau"></button>
+              <button type="button" class="color-swatch" data-color-choice="#8B5CF6" style="background:#8B5CF6" title="Ungu"></button>
+              <button type="button" class="color-swatch" data-color-choice="#F59E0B" style="background:#F59E0B" title="Oranye"></button>
+              <button type="button" class="color-swatch" data-color-choice="#EF4444" style="background:#EF4444" title="Merah"></button>
+              <button type="button" class="color-swatch" data-color-choice="#06B6D4" style="background:#06B6D4" title="Cyan"></button>
+              <button type="button" class="color-swatch" data-color-choice="#EC4899" style="background:#EC4899" title="Pink"></button>
+              <button type="button" class="color-swatch" data-color-choice="#14B8A6" style="background:#14B8A6" title="Teal"></button>
+            </div>
+
+          </div>
+
+
+          <!-- VERSION + ORDER -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationVersion"
+              >
+                Versi
+              </label>
+
+              <input
+                type="text"
+                id="applicationVersion"
+                class="form-control"
+                maxlength="30"
+                placeholder="1.0.0"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationSortOrder"
+              >
+                Urutan Tampilan
+              </label>
+
+              <input
+                type="number"
+                id="applicationSortOrder"
+                class="form-control"
+                min="0"
+                step="1"
+                value="10"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- URL -->
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="applicationUrl"
+            >
+              URL Aplikasi *
+            </label>
+
+            <input
+              type="url"
+              id="applicationUrl"
+              class="form-control"
+              maxlength="500"
+              placeholder="https://contoh.vercel.app"
+              required
+            >
+
+            <div class="form-help">
+              Gunakan HTTPS untuk aplikasi yang sudah online.
+            </div>
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="applicationDescription"
+            >
+              Deskripsi *
+            </label>
+
+            <textarea
+              id="applicationDescription"
+              class="form-control"
+              maxlength="300"
+              placeholder="Jelaskan fungsi aplikasi..."
+              required
+            ></textarea>
+
+          </div>
+
+
+          <!-- STATUS + KEYWORDS -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationStatus"
+              >
+                Status
+              </label>
+
+              <select
+                id="applicationStatus"
+                class="form-control"
+              >
+
+                <option value="Aktif">
+                  Aktif
+                </option>
+
+                <option value="Maintenance">
+                  Maintenance
+                </option>
+
+                <option value="Coming Soon">
+                  Coming Soon
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="applicationKeywords"
+              >
+                Keywords
+              </label>
+
+              <input
+                type="text"
+                id="applicationKeywords"
+                class="form-control"
+                placeholder="ATK, stok, inventory"
+              >
+
+              <div class="form-help">
+                Pisahkan keyword dengan koma.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIVE -->
+
+          <label class="checkbox-row">
+
+            <input
+              type="checkbox"
+              id="applicationIsActive"
+              checked
+            >
+
+            <span>
+              Tampilkan aplikasi di portal
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-close-modal="applicationFormModal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="saveApplicationButton"
+          >
+            💾 Simpan
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
+
+
+  <!-- =====================================================
+       FIREBASE + APPLICATION
+  ====================================================== -->
+
+  <script type="module">
+
+    /* =====================================================
+       FIREBASE IMPORT
+    ====================================================== */
+
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from
+      "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      getDocs,
+      getDoc,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      doc,
+      serverTimestamp,
+      onSnapshot
+    } from
+      "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+    /* =====================================================
+       FIREBASE CONFIG
+       
+       GANTI BAGIAN INI DENGAN CONFIG FIREBASE ANDA
+    ====================================================== */
+
+    const firebaseConfig = {
+
+      apiKey: "AIzaSyA2AOu1Q3kI3uRZSi2NMVOGLs9jIFOhXLU",
+
+    authDomain: "portal-aplikasi-a0c4f.firebaseapp.com",
+
+    projectId: "portal-aplikasi-a0c4f",
+
+    storageBucket: "portal-aplikasi-a0c4f.firebasestorage.app",
+
+    messagingSenderId: "130404683349",
+
+    appId: "1:130404683349:web:0eec7fdd6e7030b01acedc"
+
+    };
+
+
+    /* =====================================================
+       GLOBAL STATE
+    ====================================================== */
+
+    let appInstance = null;
+
+    let auth = null;
+
+    let db = null;
+
+    let firebaseReady = false;
+
+    let currentUser = null;
+
+    let currentAdmin = false;
+
+    let publicApplications = [];
+
+    let adminApplications = [];
+
+    let adminSearchText = "";
+    let adminCategoryFilter = "";
+    let adminStatusFilter = "";
+
+    let editingApplicationId = null;
+
+    let unsubscribePublicApplications = null;
+
+
+    /* =====================================================
+       DOM HELPER
+    ====================================================== */
+
+    const $ = (id) =>
+      document.getElementById(id);
+
+
+    /* =====================================================
+       INITIALIZATION
+    ====================================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        $("currentYear").textContent =
+          new Date().getFullYear();
+
+        setupEventListeners();
+
+        initializeFirebase();
+
+      }
+    );
+
+
+    /* =====================================================
+       FIREBASE INITIALIZATION
+    ====================================================== */
+
+    function initializeFirebase() {
+
+      const invalidConfig =
+
+        !firebaseConfig.apiKey ||
+
+        !firebaseConfig.authDomain ||
+
+        !firebaseConfig.projectId ||
+
+        !firebaseConfig.messagingSenderId ||
+
+        !firebaseConfig.appId ||
+
+        firebaseConfig.apiKey.startsWith(
+          "GANTI_"
+        ) ||
+
+        firebaseConfig.projectId.startsWith(
+          "GANTI_"
+        ) ||
+
+        firebaseConfig.appId.startsWith(
+          "GANTI_"
+        );
+
+
+      if (invalidConfig) {
+
+        firebaseReady = false;
+
+        showErrorState(
+          "Konfigurasi Firebase belum diisi. Silakan ganti bagian firebaseConfig di index.html dengan konfigurasi Web App dari Firebase Console."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        appInstance =
+          initializeApp(
+            firebaseConfig
+          );
+
+        auth =
+          getAuth(
+            appInstance
+          );
+
+        db =
+          getFirestore(
+            appInstance
+          );
+
+        firebaseReady = true;
+
+        listenPublicApplications();
+
+        observeAuthentication();
+
+      } catch (error) {
+
+        console.error(
+          "Firebase initialization error:",
+          error
+        );
+
+        firebaseReady = false;
+
+        showErrorState(
+          "Firebase gagal diinisialisasi. Periksa konfigurasi Firebase dan Console browser."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       AUTH STATE
+    ====================================================== */
+
+    function observeAuthentication() {
+
+      onAuthStateChanged(
+        auth,
+        async (user) => {
+
+          currentUser =
+            user || null;
+
+
+          if (!user) {
+
+            currentAdmin = false;
+
+            return;
+
+          }
+
+
+          try {
+
+            currentAdmin =
+              await checkAdmin(
+                user
+              );
+
+
+            if (!currentAdmin) {
+
+              await signOut(
+                auth
+              );
+
+              showToast(
+                "Akun ini tidak memiliki akses Admin.",
+                "warning"
+              );
+
+            }
+
+          } catch (error) {
+
+            console.error(
+              "Admin verification error:",
+              error
+            );
+
+            currentAdmin = false;
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       CHECK ADMIN
+    ====================================================== */
+
+    async function checkAdmin(
+      user
+    ) {
+
+      if (
+        !user ||
+        !db
+      ) {
+
+        return false;
+
+      }
+
+
+      try {
+
+        const adminRef =
+          doc(
+            db,
+            "admins",
+            user.uid
+          );
+
+
+        const adminSnapshot =
+          await getDoc(
+            adminRef
+          );
+
+
+        if (
+          !adminSnapshot.exists()
+        ) {
+
+          return false;
+
+        }
+
+
+        const adminData =
+          adminSnapshot.data();
+
+
+        return (
+          adminData.active === true
+        );
+
+      } catch (error) {
+
+        console.error(
+          "checkAdmin error:",
+          error
+        );
+
+        return false;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       PUBLIC APPLICATION LISTENER
+    ====================================================== */
+
+    function listenPublicApplications() {
+
+      if (!db) {
+        return;
+      }
+
+
+      if (
+        unsubscribePublicApplications
+      ) {
+
+        unsubscribePublicApplications();
+
+        unsubscribePublicApplications =
+          null;
+
+      }
+
+
+      showLoadingState();
+
+
+      const applicationsQuery =
+        query(
+          collection(
+            db,
+            "applications"
+          ),
+
+          where(
+            "isActive",
+            "==",
+            true
+          )
+        );
+
+
+      unsubscribePublicApplications =
+        onSnapshot(
+
+          applicationsQuery,
+
+          (snapshot) => {
+
+            publicApplications =
+              snapshot.docs.map(
+                (documentSnapshot) => ({
+
+                  id:
+                    documentSnapshot.id,
+
+                  ...documentSnapshot.data()
+
+                })
+              );
+
+
+            sortApplications(
+              publicApplications
+            );
+
+
+            buildCategoryFilter();
+
+            renderPublicApplications();
+
+          },
+
+          (error) => {
+
+            console.error(
+              "Public applications listener error:",
+              error
+            );
+
+            showErrorState(
+              getFirestoreErrorMessage(
+                error
+              )
+            );
+
+          }
+
+        );
+
+    }
+
+
+    /* =====================================================
+       RENDER PUBLIC APPLICATIONS
+    ====================================================== */
+
+    function renderPublicApplications() {
+
+      const searchText =
+
+        $("searchInput")
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const selectedCategory =
+
+        $("categoryFilter")
+          .value;
+
+
+      let filteredApplications =
+        [...publicApplications];
+
+
+      if (
+        selectedCategory
+      ) {
+
+        filteredApplications =
+          filteredApplications.filter(
+            (application) =>
+
+              String(
+                application.category ||
+                ""
+              )
+                .toLowerCase() ===
+              selectedCategory.toLowerCase()
+
+          );
+
+      }
+
+
+      if (
+        searchText
+      ) {
+
+        filteredApplications =
+          filteredApplications.filter(
+            (application) => {
+
+              const keywordArray =
+
+                Array.isArray(
+                  application.keywords
+                )
+                  ? application.keywords
+                  : [];
+
+
+              const searchableText = [
+
+                application.name,
+
+                application.description,
+
+                application.category,
+
+                application.version,
+
+                ...keywordArray
+
+              ]
+                .join(" ")
+                .toLowerCase();
+
+
+              return searchableText.includes(
+                searchText
+              );
+
+            }
+          );
+
+      }
+
+
+      if (
+        filteredApplications.length === 0
+      ) {
+
+        $("appGrid").style.display =
+          "none";
+
+
+        if (
+
+          publicApplications.length > 0 &&
+
+          (
+            searchText ||
+            selectedCategory
+          )
+
+        ) {
+
+          $("noSearchState").style.display =
+            "flex";
+
+        } else {
+
+          $("emptyState").style.display =
+            "flex";
+
+        }
+
+
+        $("loadingState").style.display =
+          "none";
+
+        $("errorState").style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      $("loadingState").style.display =
+        "none";
+
+      $("emptyState").style.display =
+        "none";
+
+      $("noSearchState").style.display =
+        "none";
+
+      $("errorState").style.display =
+        "none";
+
+
+      $("appGrid").style.display =
+        "grid";
+
+
+      $("appGrid").innerHTML =
+        filteredApplications
+          .map(
+            renderApplicationCard
+          )
+          .join("");
+
+    }
+
+
+    /* =====================================================
+       APPLICATION CARD
+    ====================================================== */
+
+    function renderApplicationCard(
+      application
+    ) {
+
+      const name =
+        escapeHtml(
+          application.name ||
+          "Tanpa Nama"
+        );
+
+
+      const description =
+        escapeHtml(
+          application.description ||
+          "-"
+        );
+
+
+      const category =
+        escapeHtml(
+          application.category ||
+          "Umum"
+        );
+
+
+      const version =
+        escapeHtml(
+          application.version ||
+          "-"
+        );
+
+
+      const icon =
+        escapeHtml(
+          application.icon ||
+          "📱"
+        );
+
+      const themeColor =
+        normalizeThemeColor(
+          application.themeColor
+        );
+
+
+      const status =
+        String(
+          application.status ||
+          "Aktif"
+        );
+
+
+      const statusClass =
+        getStatusClass(
+          status
+        );
+
+
+      const statusText =
+        escapeHtml(
+          status
+        );
+
+
+      const canOpen =
+        status === "Aktif";
+
+
+      return `
+
+        <article
+          class="app-card"
+          style="--app-color:${escapeAttribute(themeColor)};"
+        >
+
+          <div class="app-card-top">
+
+            <div class="app-icon">
+              ${icon}
+            </div>
+
+            <span
+              class="status-badge ${statusClass}"
+            >
+              ${statusText}
+            </span>
+
+          </div>
+
+
+          <h3>
+            ${name}
+          </h3>
+
+
+          <div class="app-category">
+            ${category}
+          </div>
+
+
+          <p class="app-description">
+            ${description}
+          </p>
+
+
+          <div class="app-card-bottom">
+
+            <span class="app-version">
+              v${version}
+            </span>
+
+
+            <button
+              type="button"
+              class="btn ${
+                canOpen
+                  ? "btn-primary"
+                  : "btn-secondary"
+              }"
+              ${
+                canOpen
+                  ? ""
+                  : "disabled"
+              }
+              data-open-app="${escapeAttribute(
+                application.id
+              )}"
+            >
+              ${
+                canOpen
+                  ? "↗ Buka Aplikasi"
+                  : "⏳ Belum Tersedia"
+              }
+            </button>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =====================================================
+       OPEN APPLICATION
+    ====================================================== */
+
+    function openApplication(
+      applicationId
+    ) {
+
+      const application =
+        publicApplications.find(
+          (item) =>
+            item.id ===
+            applicationId
+        );
+
+
+      if (!application) {
+
+        showToast(
+          "Aplikasi tidak ditemukan.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        application.status !==
+        "Aktif"
+      ) {
+
+        showToast(
+          "Aplikasi belum dapat dibuka.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      const url =
+        String(
+          application.url ||
+          ""
+        ).trim();
+
+
+      if (
+        !isSafeApplicationUrl(
+          url
+        )
+      ) {
+
+        showToast(
+          "URL aplikasi tidak valid atau tidak diizinkan.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+
+    /* =====================================================
+       CATEGORY FILTER
+    ====================================================== */
+
+    function buildCategoryFilter() {
+
+      const select =
+        $("categoryFilter");
+
+
+      const currentValue =
+        select.value;
+
+
+      const categories =
+
+        [
+          ...new Set(
+
+            publicApplications
+
+              .map(
+                (application) =>
+                  String(
+                    application.category ||
+                    ""
+                  ).trim()
+              )
+
+              .filter(Boolean)
+
+          )
+
+        ].sort(
+          (a, b) =>
+            a.localeCompare(
+              b,
+              "id"
+            )
+        );
+
+
+      select.innerHTML =
+
+        `
+          <option value="">
+            Semua Kategori
+          </option>
+        ` +
+
+        categories
+
+          .map(
+            (category) => `
+
+              <option
+                value="${escapeAttribute(
+                  category
+                )}"
+              >
+                ${escapeHtml(
+                  category
+                )}
+              </option>
+
+            `
+          )
+
+          .join("");
+
+
+      if (
+        categories.includes(
+          currentValue
+        )
+      ) {
+
+        select.value =
+          currentValue;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       ADMIN LOGIN
+    ====================================================== */
+
+    async function handleAdminLogin(
+      event
+    ) {
+
+      event.preventDefault();
+
+
+      if (!firebaseReady) {
+
+        showToast(
+          "Firebase belum dikonfigurasi.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const email =
+        $("loginEmail")
+          .value
+          .trim();
+
+
+      const password =
+        $("loginPassword")
+          .value;
+
+
+      if (
+        !email ||
+        !password
+      ) {
+
+        showToast(
+          "Email dan password wajib diisi.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      const button =
+        $("loginSubmitButton");
+
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Memproses...";
+
+
+      try {
+
+        const credential =
+
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        const isAdmin =
+          await checkAdmin(
+            credential.user
+          );
+
+
+        if (!isAdmin) {
+
+          await signOut(
+            auth
+          );
+
+          throw new Error(
+            "Akun berhasil login tetapi tidak terdaftar sebagai Admin."
+          );
+
+        }
+
+
+        currentUser =
+          credential.user;
+
+        currentAdmin =
+          true;
+
+
+        closeModal(
+          "loginModal"
+        );
+
+
+        $("loginForm").reset();
+
+
+        await openAdminDashboard();
+
+
+        showToast(
+          "Login Admin berhasil.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Admin login error:",
+          error
+        );
+
+
+        showToast(
+          getAuthErrorMessage(
+            error
+          ),
+          "error"
+        );
+
+      } finally {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "🔑 Login";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       OPEN ADMIN DASHBOARD
+    ====================================================== */
+
+    async function openAdminDashboard() {
+
+      if (
+        !currentUser ||
+        !currentAdmin
+      ) {
+
+        showToast(
+          "Akses Admin tidak tersedia.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      $("adminUserLabel").textContent =
+        currentUser.email ||
+        "Administrator";
+
+
+      openModal(
+        "adminModal"
+      );
+
+
+      await loadAdminApplications();
+
+    }
+
+
+    /* =====================================================
+       LOAD ADMIN APPLICATIONS
+    ====================================================== */
+
+    async function loadAdminApplications() {
+
+      if (
+        !db ||
+        !currentUser ||
+        !currentAdmin
+      ) {
+
+        return;
+
+      }
+
+
+      $("adminTableBody").innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="8"
+            style="
+              text-align:center;
+              padding:30px;
+            "
+          >
+            Memuat data...
+          </td>
+
+        </tr>
+
+      `;
+
+
+      try {
+
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "applications"
+            )
+          );
+
+
+        adminApplications =
+          snapshot.docs.map(
+            (documentSnapshot) => ({
+
+              id:
+                documentSnapshot.id,
+
+              ...documentSnapshot.data()
+
+            })
+          );
+
+
+        sortApplications(
+          adminApplications
+        );
+
+        updateAdminFilterOptions();
+        renderAdminTable();
+
+        updateAdminStats();
+
+      } catch (error) {
+
+        console.error(
+          "Load admin applications error:",
+          error
+        );
+
+
+        $("adminTableBody").innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="8"
+              style="
+                text-align:center;
+                padding:30px;
+                color:#dc2626;
+              "
+            >
+              ${escapeHtml(
+                getFirestoreErrorMessage(
+                  error
+                )
+              )}
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       RENDER ADMIN TABLE
+    ====================================================== */
+
+    function renderAdminTable() {
+
+      const tbody =
+        $("adminTableBody");
+
+
+      if (
+        adminApplications.length === 0
+      ) {
+
+        tbody.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="8"
+              style="
+                text-align:center;
+                padding:35px;
+                color:#6b7280;
+              "
+            >
+              Belum ada aplikasi.
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      const filteredApplications = getFilteredAdminApplications();
+
+      if (filteredApplications.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align:center;padding:35px;color:#6b7280;">
+              Tidak ada aplikasi yang sesuai filter.
+            </td>
+          </tr>
+        `;
+        updateAdminFilterSummary(0);
+        return;
+      }
+
+      updateAdminFilterSummary(filteredApplications.length);
+
+      tbody.innerHTML =
+        filteredApplications
+          .map(
+            (
+              application,
+              index
+            ) => {
+
+              const status =
+                String(
+                  application.status ||
+                  "Aktif"
+                );
+
+
+              const isActive =
+                application.isActive ===
+                true;
+
+
+              const statusClass =
+                getStatusClass(
+                  status
+                );
+
+
+              return `
+
+                <tr>
+
+                  <td>
+                    ${index + 1}
+                  </td>
+
+
+                  <td>
+
+                    <div
+                      class="table-app-name"
+                    >
+                      ${escapeHtml(
+                        application.icon ||
+                        "📱"
+                      )}
+
+                      ${escapeHtml(
+                        application.name ||
+                        "-"
+                      )}
+                    </div>
+
+
+                    <div
+                      class="table-app-category"
+                    >
+                      ${escapeHtml(
+                        application.url ||
+                        "-"
+                      )}
+                    </div>
+
+                  </td>
+
+
+                  <td>
+                    ${escapeHtml(
+                      application.category ||
+                      "-"
+                    )}
+                  </td>
+
+
+                  <td>
+
+                    <span
+                      class="status-badge ${statusClass}"
+                    >
+                      ${escapeHtml(
+                        status
+                      )}
+                    </span>
+
+                  </td>
+
+
+                  <td>
+                    ${escapeHtml(
+                      application.version ||
+                      "-"
+                    )}
+                  </td>
+
+
+                  <td>
+                    ${
+                      Number.isInteger(
+                        application.sortOrder
+                      )
+                        ? application.sortOrder
+                        : "-"
+                    }
+                  </td>
+
+
+                  <td>
+
+                    ${
+                      isActive
+
+                        ? `
+
+                          <span
+                            class="
+                              status-badge
+                              status-active
+                            "
+                          >
+                            Tampil
+                          </span>
+
+                        `
+
+                        : `
+
+                          <span
+                            class="
+                              status-badge
+                              status-coming
+                            "
+                          >
+                            Tersembunyi
+                          </span>
+
+                        `
+                    }
+
+                  </td>
+
+
+                  <td>
+
+                    <div
+                      class="table-actions"
+                    >
+
+                      <button
+                        type="button"
+                        class="table-btn"
+                        data-edit-app="${escapeAttribute(
+                          application.id
+                        )}"
+                      >
+                        ✏️ Edit
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="
+                          table-btn
+                          ${
+                            isActive
+                              ? "table-btn-danger"
+                              : "table-btn-success"
+                          }
+                        "
+                        data-toggle-app="${escapeAttribute(
+                          application.id
+                        )}"
+                      >
+                        ${
+                          isActive
+                            ? "Nonaktifkan"
+                            : "Aktifkan"
+                        }
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="
+                          table-btn
+                          table-btn-danger
+                        "
+                        data-delete-app="${escapeAttribute(
+                          application.id
+                        )}"
+                      >
+                        🗑 Hapus
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              `;
+
+            }
+          )
+          .join("");
+
+    }
+
+
+    function getFilteredAdminApplications() {
+      const query = adminSearchText.trim().toLowerCase();
+
+      return adminApplications.filter((application) => {
+        const name = String(application.name || "").toLowerCase();
+        const category = String(application.category || "").toLowerCase();
+        const url = String(application.url || "").toLowerCase();
+        const keywords = Array.isArray(application.keywords)
+          ? application.keywords.join(" ").toLowerCase()
+          : String(application.keywords || "").toLowerCase();
+        const status = String(application.status || "Aktif");
+
+        const matchesSearch = !query ||
+          name.includes(query) ||
+          category.includes(query) ||
+          url.includes(query) ||
+          keywords.includes(query);
+
+        const matchesCategory = !adminCategoryFilter ||
+          String(application.category || "") === adminCategoryFilter;
+
+        const matchesStatus = !adminStatusFilter ||
+          status === adminStatusFilter;
+
+        return matchesSearch && matchesCategory && matchesStatus;
+      });
+    }
+
+    function updateAdminFilterOptions() {
+      const select = $("adminCategoryFilter");
+      if (!select) return;
+
+      const categories = [...new Set(
+        adminApplications
+          .map((application) => String(application.category || "").trim())
+          .filter(Boolean)
+      )].sort((a, b) => a.localeCompare(b, "id"));
+
+      const current = adminCategoryFilter;
+      select.innerHTML = '<option value="">Semua Kategori</option>' +
+        categories.map((category) =>
+          `<option value="${escapeAttribute(category)}">${escapeHtml(category)}</option>`
+        ).join("");
+
+      select.value = categories.includes(current) ? current : "";
+      adminCategoryFilter = select.value;
+    }
+
+    function updateAdminFilterSummary(count) {
+      const summary = $("adminFilterSummary");
+      if (!summary) return;
+
+      const total = adminApplications.length;
+      if (!adminSearchText && !adminCategoryFilter && !adminStatusFilter) {
+        summary.textContent = `${total} aplikasi`;
+      } else {
+        summary.textContent = `Menampilkan ${count} dari ${total} aplikasi`;
+      }
+    }
+
+    function resetAdminFilters() {
+      adminSearchText = "";
+      adminCategoryFilter = "";
+      adminStatusFilter = "";
+
+      const search = $("adminSearchInput");
+      const category = $("adminCategoryFilter");
+      const status = $("adminStatusFilter");
+
+      if (search) search.value = "";
+      if (category) category.value = "";
+      if (status) status.value = "";
+
+      renderAdminTable();
+    }
+
+
+    /* =====================================================
+       ADMIN STATS
+    ====================================================== */
+
+    function updateAdminStats() {
+
+      const total =
+        adminApplications.length;
+
+
+      const active =
+        adminApplications.filter(
+          (application) =>
+            application.isActive === true
+            && String(application.status || "Aktif") === "Aktif"
+        ).length;
+
+
+      const maintenance =
+        adminApplications.filter(
+          (application) =>
+            application.isActive === true
+            && String(application.status || "") === "Maintenance"
+        ).length;
+
+
+      const inactive =
+        adminApplications.filter(
+          (application) =>
+            application.isActive !==
+            true
+        ).length;
+
+
+      $("statTotal").textContent =
+        total;
+
+      $("statActive").textContent =
+        active;
+
+      $("statMaintenance").textContent =
+        maintenance;
+
+      $("statInactive").textContent =
+        inactive;
+
+    }
+
+
+    /* =====================================================
+       OPEN ADD FORM
+    ====================================================== */
+
+    function openAddApplicationForm() {
+
+      if (!currentAdmin) {
+
+        showToast(
+          "Anda bukan Admin.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      editingApplicationId =
+        null;
+
+
+      $("applicationFormTitle").textContent =
+        "Tambah Aplikasi";
+
+
+      $("applicationForm").reset();
+
+
+      $("applicationId").value =
+        "";
+
+
+      $("applicationIcon").value =
+        "📱";
+      updateIconPicker("📱");
+      $("applicationThemeColor").value =
+        "#3B82F6";
+      updateThemeColorPicker("#3B82F6");
+
+
+      $("applicationVersion").value =
+        "1.0.0";
+
+
+      $("applicationSortOrder").value =
+        getNextSortOrder();
+
+
+      $("applicationStatus").value =
+        "Aktif";
+
+
+      $("applicationIsActive").checked =
+        true;
+
+
+      openModal(
+        "applicationFormModal"
+      );
+
+
+      setTimeout(
+        () =>
+          $("applicationName").focus(),
+        100
+      );
+
+    }
+
+
+    /* =====================================================
+       NEXT SORT ORDER
+    ====================================================== */
+
+    function getNextSortOrder() {
+
+      if (
+        adminApplications.length ===
+        0
+      ) {
+
+        return 10;
+
+      }
+
+
+      const values =
+        adminApplications
+
+          .map(
+            (application) =>
+              Number(
+                application.sortOrder
+              )
+          )
+
+          .filter(
+            (value) =>
+              Number.isFinite(
+                value
+              )
+          );
+
+
+      if (
+        values.length ===
+        0
+      ) {
+
+        return 10;
+
+      }
+
+
+      return (
+        Math.max(...values) +
+        10
+      );
+
+    }
+
+
+    /* =====================================================
+       OPEN EDIT FORM
+    ====================================================== */
+
+    function openEditApplicationForm(
+      applicationId
+    ) {
+
+      if (!currentAdmin) {
+        return;
+      }
+
+
+      const application =
+        adminApplications.find(
+          (item) =>
+            item.id ===
+            applicationId
+        );
+
+
+      if (!application) {
+
+        showToast(
+          "Data aplikasi tidak ditemukan.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      editingApplicationId =
+        applicationId;
+
+
+      $("applicationFormTitle").textContent =
+        "Edit Aplikasi";
+
+
+      $("applicationId").value =
+        applicationId;
+
+
+      $("applicationName").value =
+        application.name ||
+        "";
+
+
+      $("applicationCategory").value =
+        application.category ||
+        "";
+
+
+      $("applicationIcon").value =
+        application.icon ||
+        "📱";
+      updateIconPicker(
+        application.icon ||
+        "📱"
+      );
+      const editThemeColor =
+        normalizeThemeColor(
+          application.themeColor
+        );
+      $("applicationThemeColor").value =
+        editThemeColor;
+      updateThemeColorPicker(
+        editThemeColor
+      );
+
+
+      $("applicationVersion").value =
+        application.version ||
+        "1.0.0";
+
+
+      $("applicationSortOrder").value =
+        Number.isInteger(
+          application.sortOrder
+        )
+          ? application.sortOrder
+          : 10;
+
+
+      $("applicationUrl").value =
+        application.url ||
+        "";
+
+
+      $("applicationDescription").value =
+        application.description ||
+        "";
+
+
+      $("applicationStatus").value =
+        application.status ||
+        "Aktif";
+
+
+      $("applicationKeywords").value =
+
+        Array.isArray(
+          application.keywords
+        )
+
+          ? application.keywords.join(
+              ", "
+            )
+
+          : "";
+
+
+      $("applicationIsActive").checked =
+        application.isActive ===
+        true;
+
+
+      openModal(
+        "applicationFormModal"
+      );
+
+    }
+
+
+    /* =====================================================
+       SAVE APPLICATION
+    ====================================================== */
+
+    async function saveApplication(
+      event
+    ) {
+
+      event.preventDefault();
+
+
+      if (
+        !currentAdmin ||
+        !db
+      ) {
+
+        showToast(
+          "Anda tidak memiliki akses Admin.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const name =
+        $("applicationName")
+          .value
+          .trim();
+
+
+      const category =
+        $("applicationCategory")
+          .value
+          .trim();
+
+
+      const icon =
+        $("applicationIcon")
+          .value
+          .trim() ||
+        "📱";
+
+      const themeColor =
+        normalizeThemeColor(
+          $("applicationThemeColor").value
+        );
+
+
+      const version =
+        $("applicationVersion")
+          .value
+          .trim() ||
+        "1.0.0";
+
+
+      const sortOrder =
+        Number(
+          $("applicationSortOrder")
+            .value
+        );
+
+
+      const url =
+        $("applicationUrl")
+          .value
+          .trim();
+
+
+      const description =
+        $("applicationDescription")
+          .value
+          .trim();
+
+
+      const status =
+        $("applicationStatus")
+          .value;
+
+
+      const keywordsText =
+        $("applicationKeywords")
+          .value
+          .trim();
+
+
+      const isActive =
+        $("applicationIsActive")
+          .checked;
+
+
+      if (
+        !name ||
+        !category ||
+        !url ||
+        !description
+      ) {
+
+        showToast(
+          "Field bertanda * wajib diisi.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !Number.isInteger(
+          sortOrder
+        ) ||
+        sortOrder < 0
+      ) {
+
+        showToast(
+          "Urutan tampilan harus berupa angka 0 atau lebih.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !isSafeApplicationUrl(
+          url
+        )
+      ) {
+
+        showToast(
+          "URL tidak valid. Gunakan HTTPS untuk aplikasi online.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      const keywords =
+
+        keywordsText
+
+          ? keywordsText
+              .split(",")
+              .map(
+                (item) =>
+                  item.trim()
+              )
+              .filter(Boolean)
+
+          : [];
+
+
+      const saveButton =
+        $("saveApplicationButton");
+
+
+      saveButton.disabled =
+        true;
+
+      saveButton.textContent =
+        "Menyimpan...";
+
+
+      try {
+
+        const applicationData = {
+
+          name,
+
+          category,
+
+          icon,
+
+          themeColor,
+
+          version,
+
+          sortOrder,
+
+          url,
+
+          description,
+
+          status,
+
+          keywords,
+
+          isActive,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        if (
+          editingApplicationId
+        ) {
+
+          const applicationRef =
+            doc(
+              db,
+              "applications",
+              editingApplicationId
+            );
+
+
+          await updateDoc(
+            applicationRef,
+            applicationData
+          );
+
+
+          showToast(
+            "Aplikasi berhasil diperbarui.",
+            "success"
+          );
+
+        } else {
+
+          applicationData.createdAt =
+            serverTimestamp();
+
+
+          await addDoc(
+            collection(
+              db,
+              "applications"
+            ),
+            applicationData
+          );
+
+
+          showToast(
+            "Aplikasi berhasil ditambahkan.",
+            "success"
+          );
+
+        }
+
+
+        closeModal(
+          "applicationFormModal"
+        );
+
+
+        await loadAdminApplications();
+
+      } catch (error) {
+
+        console.error(
+          "Save application error:",
+          error
+        );
+
+
+        showToast(
+          getFirestoreErrorMessage(
+            error
+          ),
+          "error"
+        );
+
+      } finally {
+
+        saveButton.disabled =
+          false;
+
+        saveButton.textContent =
+          "💾 Simpan";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TOGGLE APPLICATION
+    ====================================================== */
+
+    async function toggleApplication(
+      applicationId
+    ) {
+
+      if (
+        !currentAdmin ||
+        !db
+      ) {
+
+        return;
+
+      }
+
+
+      const application =
+        adminApplications.find(
+          (item) =>
+            item.id ===
+            applicationId
+        );
+
+
+      if (!application) {
+        return;
+      }
+
+
+      const newValue =
+        application.isActive !==
+        true;
+
+
+      const confirmation =
+
+        newValue
+
+          ? `Aktifkan aplikasi "${application.name}"?`
+
+          : `Nonaktifkan aplikasi "${application.name}"?`;
+
+
+      if (
+        !window.confirm(
+          confirmation
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const applicationRef =
+          doc(
+            db,
+            "applications",
+            applicationId
+          );
+
+
+        await updateDoc(
+          applicationRef,
+          {
+
+            isActive:
+              newValue,
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        showToast(
+
+          newValue
+
+            ? "Aplikasi berhasil diaktifkan."
+
+            : "Aplikasi berhasil dinonaktifkan.",
+
+          "success"
+
+        );
+
+
+        await loadAdminApplications();
+
+      } catch (error) {
+
+        console.error(
+          "Toggle application error:",
+          error
+        );
+
+
+        showToast(
+          getFirestoreErrorMessage(
+            error
+          ),
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       DELETE APPLICATION
+    ====================================================== */
+
+    async function deleteApplication(
+      applicationId
+    ) {
+
+      if (
+        !currentAdmin ||
+        !db
+      ) {
+
+        return;
+
+      }
+
+
+      const application =
+        adminApplications.find(
+          (item) =>
+            item.id ===
+            applicationId
+        );
+
+
+      if (!application) {
+        return;
+      }
+
+
+      const confirmed =
+        window.confirm(
+
+          `Hapus aplikasi "${application.name}"?\n\nData yang dihapus tidak dapat dikembalikan.`
+
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        const applicationRef =
+          doc(
+            db,
+            "applications",
+            applicationId
+          );
+
+
+        await deleteDoc(
+          applicationRef
+        );
+
+
+        showToast(
+          "Aplikasi berhasil dihapus.",
+          "success"
+        );
+
+
+        await loadAdminApplications();
+
+      } catch (error) {
+
+        console.error(
+          "Delete application error:",
+          error
+        );
+
+
+        showToast(
+          getFirestoreErrorMessage(
+            error
+          ),
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
+
+    async function handleLogout() {
+
+      if (!auth) {
+        return;
+      }
+
+
+      try {
+
+        await signOut(
+          auth
+        );
+
+
+        currentUser =
+          null;
+
+        currentAdmin =
+          false;
+
+
+        closeModal(
+          "adminModal"
+        );
+
+
+        showToast(
+          "Anda telah keluar dari Admin.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+
+        showToast(
+          "Gagal keluar dari akun.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       EVENT LISTENERS
+    ====================================================== */
+
+    function setupEventListeners() {
+
+      $("adminLoginButton")
+        .addEventListener(
+          "click",
+          () => {
+
+            if (
+              currentUser &&
+              currentAdmin
+            ) {
+
+              openAdminDashboard();
+
+            } else {
+
+              openModal(
+                "loginModal"
+              );
+
+
+              setTimeout(
+                () =>
+                  $("loginEmail").focus(),
+                100
+              );
+
+            }
+
+          }
+        );
+
+
+      $("loginForm")
+        .addEventListener(
+          "submit",
+          handleAdminLogin
+        );
+
+
+      $("searchInput")
+        .addEventListener(
+          "input",
+          renderPublicApplications
+        );
+
+
+      $("categoryFilter")
+        .addEventListener(
+          "change",
+          renderPublicApplications
+        );
+
+
+      $("retryButton")
+        .addEventListener(
+          "click",
+          () => {
+
+            if (
+              firebaseReady
+            ) {
+
+              listenPublicApplications();
+
+            } else {
+
+              initializeFirebase();
+
+            }
+
+          }
+        );
+
+
+      $("adminSearchInput")
+        .addEventListener(
+          "input",
+          (event) => {
+            adminSearchText = event.target.value;
+            renderAdminTable();
+          }
+        );
+
+
+      $("adminCategoryFilter")
+        .addEventListener(
+          "change",
+          (event) => {
+            adminCategoryFilter = event.target.value;
+            renderAdminTable();
+          }
+        );
+
+
+      $("adminStatusFilter")
+        .addEventListener(
+          "change",
+          (event) => {
+            adminStatusFilter = event.target.value;
+            renderAdminTable();
+          }
+        );
+
+
+      $("resetAdminFilterButton")
+        .addEventListener(
+          "click",
+          resetAdminFilters
+        );
+
+
+      $("addApplicationButton")
+        .addEventListener(
+          "click",
+          openAddApplicationForm
+        );
+
+
+      $("refreshAdminButton")
+        .addEventListener(
+          "click",
+          loadAdminApplications
+        );
+
+
+      $("closeAdminButton")
+        .addEventListener(
+          "click",
+          () => {
+
+            closeModal(
+              "adminModal"
+            );
+
+          }
+        );
+
+
+      $("logoutButton")
+        .addEventListener(
+          "click",
+          handleLogout
+        );
+
+
+      $("applicationIcon")
+        .addEventListener(
+          "input",
+          (event) => updateIconPicker(event.target.value)
+        );
+
+      $("applicationThemeColor")
+        .addEventListener(
+          "input",
+          (event) => updateThemeColorPicker(event.target.value)
+        );
+
+      document
+        .querySelectorAll("[data-icon-choice]")
+        .forEach((button) => {
+          button.addEventListener(
+            "click",
+            () => updateIconPicker(button.dataset.iconChoice)
+          );
+        });
+
+      document
+        .querySelectorAll("[data-color-choice]")
+        .forEach((button) => {
+          button.addEventListener(
+            "click",
+            () => updateThemeColorPicker(button.dataset.colorChoice)
+          );
+        });
+
+
+      $("applicationForm")
+        .addEventListener(
+          "submit",
+          saveApplication
+        );
+
+
+      document.addEventListener(
+        "click",
+        (event) => {
+
+          const openButton =
+            event.target.closest(
+              "[data-open-app]"
+            );
+
+
+          if (openButton) {
+
+            openApplication(
+              openButton.dataset.openApp
+            );
+
+            return;
+
+          }
+
+
+          const editButton =
+            event.target.closest(
+              "[data-edit-app]"
+            );
+
+
+          if (editButton) {
+
+            openEditApplicationForm(
+              editButton.dataset.editApp
+            );
+
+            return;
+
+          }
+
+
+          const toggleButton =
+            event.target.closest(
+              "[data-toggle-app]"
+            );
+
+
+          if (toggleButton) {
+
+            toggleApplication(
+              toggleButton.dataset.toggleApp
+            );
+
+            return;
+
+          }
+
+
+          const deleteButton =
+            event.target.closest(
+              "[data-delete-app]"
+            );
+
+
+          if (deleteButton) {
+
+            deleteApplication(
+              deleteButton.dataset.deleteApp
+            );
+
+            return;
+
+          }
+
+
+          const closeButton =
+            event.target.closest(
+              "[data-close-modal]"
+            );
+
+
+          if (closeButton) {
+
+            closeModal(
+              closeButton.dataset.closeModal
+            );
+
+          }
+
+        }
+      );
+
+
+      document.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (event.key !== "Escape") {
+            return;
+          }
+
+          const applicationFormOpen =
+            $("applicationFormModal")?.classList.contains("show");
+
+          // Form Tambah/Edit tidak boleh tertutup dengan Escape
+          // agar input yang sedang diketik tidak hilang.
+          if (applicationFormOpen) {
+            return;
+          }
+
+          document
+            .querySelectorAll(
+              ".modal-overlay.show"
+            )
+            .forEach(
+              (modal) =>
+                modal.classList.remove(
+                  "show"
+                )
+            );
+
+        }
+      );
+
+
+      // Klik area di luar kotak modal tidak menutup modal.
+      // Modal ditutup hanya melalui tombol ×, Batal, atau fungsi closeModal().
+
+    }
+
+
+    /* =====================================================
+       MODAL HELPERS
+    ====================================================== */
+
+    function openModal(
+      modalId
+    ) {
+
+      const modal =
+        $(modalId);
+
+
+      if (modal) {
+
+        modal.classList.add(
+          "show"
+        );
+
+      }
+
+    }
+
+
+    function closeModal(
+      modalId
+    ) {
+
+      const modal =
+        $(modalId);
+
+
+      if (modal) {
+
+        modal.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SORT APPLICATIONS
+    ====================================================== */
+
+    function sortApplications(
+      applications
+    ) {
+
+      applications.sort(
+        (a, b) => {
+
+          const orderA =
+            Number.isInteger(
+              a.sortOrder
+            )
+              ? a.sortOrder
+              : 999999;
+
+
+          const orderB =
+            Number.isInteger(
+              b.sortOrder
+            )
+              ? b.sortOrder
+              : 999999;
+
+
+          if (
+            orderA !==
+            orderB
+          ) {
+
+            return (
+              orderA -
+              orderB
+            );
+
+          }
+
+
+          return String(
+            a.name ||
+            ""
+          ).localeCompare(
+            String(
+              b.name ||
+              ""
+            ),
+            "id"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       ICON + THEME COLOR PICKERS
+    ====================================================== */
+
+    function updateIconPicker(icon) {
+      const value = String(icon || "📱").trim() || "📱";
+      const input = $("applicationIcon");
+      const preview = $("applicationIconPreview");
+
+      if (input) input.value = value;
+      if (preview) preview.textContent = value;
+
+      document.querySelectorAll("[data-icon-choice]").forEach((button) => {
+        button.classList.toggle(
+          "selected",
+          button.dataset.iconChoice === value
+        );
+      });
+    }
+
+    function normalizeThemeColor(value) {
+      const raw = String(value || "").trim().toUpperCase();
+      return /^#[0-9A-F]{6}$/.test(raw)
+        ? raw
+        : "#3B82F6";
+    }
+
+    function updateThemeColorPicker(value) {
+      const color = normalizeThemeColor(value);
+      const input = $("applicationThemeColor");
+      const label = $("applicationThemeColorLabel");
+
+      if (input) input.value = color;
+      if (label) label.textContent = color;
+
+      document.querySelectorAll("[data-color-choice]").forEach((button) => {
+        button.classList.toggle(
+          "selected",
+          normalizeThemeColor(button.dataset.colorChoice) === color
+        );
+      });
+    }
+
+
+    /* =====================================================
+       STATUS CLASS
+    ====================================================== */
+
+    function getStatusClass(
+      status
+    ) {
+
+      if (
+        status ===
+        "Aktif"
+      ) {
+
+        return "status-active";
+
+      }
+
+
+      if (
+        status ===
+        "Maintenance"
+      ) {
+
+        return "status-maintenance";
+
+      }
+
+
+      return "status-coming";
+
+    }
+
+
+    /* =====================================================
+       SAFE APPLICATION URL
+    ====================================================== */
+
+    function isSafeApplicationUrl(
+      url
+    ) {
+
+      try {
+
+        const parsed =
+          new URL(
+            url
+          );
+
+
+        if (
+          parsed.protocol ===
+          "https:"
+        ) {
+
+          return true;
+
+        }
+
+
+        const isLocalhost =
+
+          parsed.protocol ===
+            "http:" &&
+
+          (
+            parsed.hostname ===
+              "localhost" ||
+
+            parsed.hostname ===
+              "127.0.0.1"
+          );
+
+
+        return isLocalhost;
+
+      } catch {
+
+        return false;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       HTML ESCAPE
+    ====================================================== */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ??
+        ""
+      )
+
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+
+    }
+
+
+    function escapeAttribute(
+      value
+    ) {
+
+      return escapeHtml(
+        value
+      );
+
+    }
+
+
+    /* =====================================================
+       LOADING STATE
+    ====================================================== */
+
+    function showLoadingState() {
+
+      $("loadingState").style.display =
+        "flex";
+
+      $("appGrid").style.display =
+        "none";
+
+      $("emptyState").style.display =
+        "none";
+
+      $("noSearchState").style.display =
+        "none";
+
+      $("errorState").style.display =
+        "none";
+
+    }
+
+
+    /* =====================================================
+       ERROR STATE
+    ====================================================== */
+
+    function showErrorState(
+      message
+    ) {
+
+      $("loadingState").style.display =
+        "none";
+
+      $("appGrid").style.display =
+        "none";
+
+      $("emptyState").style.display =
+        "none";
+
+      $("noSearchState").style.display =
+        "none";
+
+      $("errorState").style.display =
+        "flex";
+
+
+      $("errorMessage").textContent =
+        message;
+
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    function showToast(
+      message,
+      type = ""
+    ) {
+
+      const container =
+        $("toastContainer");
+
+
+      const toast =
+        document.createElement(
+          "div"
+        );
+
+
+      toast.className =
+        `toast ${type}`;
+
+
+      toast.textContent =
+        message;
+
+
+      container.appendChild(
+        toast
+      );
+
+
+      setTimeout(
+        () => {
+
+          toast.style.opacity =
+            "0";
+
+          toast.style.transform =
+            "translateY(8px)";
+
+
+          setTimeout(
+            () =>
+              toast.remove(),
+            200
+          );
+
+        },
+        3500
+      );
+
+    }
+
+
+    /* =====================================================
+       AUTH ERROR MESSAGE
+    ====================================================== */
+
+    function getAuthErrorMessage(
+      error
+    ) {
+
+      const code =
+        error?.code ||
+        "";
+
+
+      const messages = {
+
+        "auth/invalid-credential":
+          "Email atau password salah.",
+
+        "auth/invalid-login-credentials":
+          "Email atau password salah.",
+
+        "auth/user-not-found":
+          "Akun tidak ditemukan.",
+
+        "auth/wrong-password":
+          "Password salah.",
+
+        "auth/invalid-email":
+          "Format email tidak valid.",
+
+        "auth/user-disabled":
+          "Akun tersebut telah dinonaktifkan.",
+
+        "auth/too-many-requests":
+          "Terlalu banyak percobaan login. Silakan coba beberapa saat lagi.",
+
+        "auth/network-request-failed":
+          "Koneksi internet bermasalah."
+
+      };
+
+
+      return (
+
+        messages[code] ||
+
+        error?.message ||
+
+        "Login gagal."
+
+      );
+
+    }
+
+
+    /* =====================================================
+       FIRESTORE ERROR MESSAGE
+    ====================================================== */
+
+    function getFirestoreErrorMessage(
+      error
+    ) {
+
+      const code =
+        error?.code ||
+        "";
+
+
+      if (
+        code ===
+        "permission-denied"
+      ) {
+
+        return (
+          "Akses Firestore ditolak. Periksa Firestore Rules dan status akun Admin."
+        );
+
+      }
+
+
+      if (
+        code ===
+        "unavailable"
+      ) {
+
+        return (
+          "Firebase sedang tidak tersedia atau koneksi internet bermasalah."
+        );
+
+      }
+
+
+      if (
+        code ===
+        "failed-precondition"
+      ) {
+
+        return (
+          "Operasi Firestore gagal karena konfigurasi atau kondisi database."
+        );
+
+      }
+
+
+      return (
+
+        error?.message ||
+
+        "Terjadi kesalahan pada Firestore."
+
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
