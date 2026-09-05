@@ -1637,6 +1637,168 @@
       background: #fff;
     }
 
+    .credential-modal {
+      width: min(520px, 100%);
+    }
+
+    .table-btn-login {
+      border-color: #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .table-btn-login:hover {
+      background: #dbeafe;
+    }
+
+    .credential-app-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 18px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .credential-app-icon {
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 11px;
+      background: #e0ecff;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .credential-label {
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 750;
+      margin-bottom: 5px;
+    }
+
+    .credential-app-name,
+    .credential-value {
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 750;
+      word-break: break-word;
+    }
+
+    .credential-field {
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 11px;
+      background: #ffffff;
+    }
+
+    .credential-password-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .credential-password-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 11px;
+      border: 1px solid #dbe3ee;
+      border-radius: 9px;
+      background: #f8fafc;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .credential-icon-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #dbe3ee;
+      border-radius: 9px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .credential-icon-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .credential-empty {
+      padding: 13px 14px;
+      border-radius: 10px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .credential-locked {
+      padding: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+
+    .credential-locked-title {
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 5px;
+    }
+
+    .credential-locked p {
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .credential-note {
+      white-space: pre-wrap;
+      line-height: 1.55;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .master-password-modal {
+      width: min(460px, 100%);
+    }
+
+    .master-password-info {
+      padding: 13px 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 11px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 12px;
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .master-password-info strong {
+      color: #1e40af;
+    }
+
+    @media (max-width: 640px) {
+      .credential-modal {
+        width: 100%;
+      }
+
+      .credential-password-row {
+        grid-template-columns: 1fr auto auto;
+      }
+    }
+
     @media (max-width: 900px) {
       .admin-filter-bar {
         grid-template-columns: 1fr 1fr;
@@ -2375,6 +2537,10 @@
                 </th>
 
                 <th>
+                  Login
+                </th>
+
+                <th>
                   Aksi
                 </th>
 
@@ -2390,6 +2556,159 @@
 
         </div>
 
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       APPLICATION LOGIN NOTE MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="credentialModal"
+  >
+
+    <div class="modal credential-modal">
+
+      <div class="modal-header">
+
+        <div>
+          <h2>Informasi Login</h2>
+          <div class="admin-user">Catatan login terenkripsi • Hanya Admin</div>
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          data-close-modal="credentialModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="credential-app-card">
+          <div class="credential-app-icon" id="credentialAppIcon">🔐</div>
+          <div>
+            <div class="credential-label">Aplikasi</div>
+            <div class="credential-app-name" id="credentialAppName">-</div>
+          </div>
+        </div>
+
+        <div id="credentialLocked" class="credential-locked" style="display:none;">
+          <div class="credential-locked-title">🔒 Catatan login terkunci</div>
+          <p>Data login tersimpan dalam bentuk terenkripsi. Masukkan Master Password Portal untuk membukanya.</p>
+          <button type="button" class="btn btn-primary" id="credentialUnlockButton">🔓 Buka Catatan</button>
+        </div>
+
+        <div id="credentialReadView">
+
+          <div class="credential-field">
+            <div class="credential-label">Login</div>
+            <div class="credential-value" id="credentialLoginValue">-</div>
+          </div>
+
+          <div class="credential-field">
+            <div class="credential-label">Password</div>
+            <div class="credential-password-row">
+              <input type="password" id="credentialPasswordDisplay" class="credential-password-input" readonly>
+              <button type="button" class="credential-icon-btn" id="credentialRevealButton" title="Tampilkan password" aria-label="Tampilkan password">👁</button>
+              <button type="button" class="credential-icon-btn" id="credentialCopyButton" title="Salin password" aria-label="Salin password">📋</button>
+            </div>
+          </div>
+
+          <div class="credential-field">
+            <div class="credential-label">Catatan</div>
+            <div class="credential-note" id="credentialNoteValue">-</div>
+          </div>
+
+          <div class="credential-empty" id="credentialEmpty" style="display:none;">
+            Belum ada catatan login yang tersimpan untuk aplikasi ini.
+          </div>
+
+        </div>
+
+        <div id="credentialEditView" style="display:none;">
+          <div class="form-group">
+            <label class="form-label" for="credentialLoginInput">Login Admin</label>
+            <input type="text" id="credentialLoginInput" class="form-control" maxlength="150" autocomplete="off" placeholder="Masukkan username/login admin">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="credentialPasswordInput">Password</label>
+            <input type="password" id="credentialPasswordInput" class="form-control" maxlength="300" autocomplete="new-password" placeholder="Masukkan password aplikasi">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="credentialNoteInput">Catatan</label>
+            <textarea id="credentialNoteInput" class="form-control" rows="3" maxlength="500" placeholder="Contoh: akun admin utama / password mengikuti akun Purchasing"></textarea>
+            <div class="form-help">Password dan catatan akan dienkripsi di browser sebelum disimpan. Master Password tidak pernah disimpan di Firestore.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="credentialCancelEditButton" style="display:none;">Batal</button>
+        <button type="button" class="btn btn-secondary" id="credentialEditButton">✏️ Edit Catatan</button>
+        <button type="button" class="btn btn-primary" id="credentialSaveButton" style="display:none;">💾 Simpan Catatan</button>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MASTER PASSWORD MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="masterPasswordModal"
+  >
+
+    <div class="modal master-password-modal">
+
+      <div class="modal-header">
+        <h2 id="masterPasswordTitle">Master Password Portal</h2>
+        <button
+          type="button"
+          class="modal-close"
+          id="closeMasterPasswordButton"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="master-password-info">
+          <strong>Penting:</strong> Master Password digunakan untuk mengenkripsi dan membuka catatan login. Master Password hanya berada di memori browser selama sesi ini dan tidak disimpan di Firestore.
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="masterPasswordInput">Master Password</label>
+          <input
+            type="password"
+            id="masterPasswordInput"
+            class="form-control"
+            minlength="8"
+            maxlength="200"
+            autocomplete="new-password"
+            placeholder="Minimal 8 karakter"
+          >
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="masterPasswordCancelButton">Batal</button>
+        <button type="button" class="btn btn-primary" id="masterPasswordConfirmButton">🔓 Lanjutkan</button>
       </div>
 
     </div>
@@ -2811,6 +3130,7 @@
       getDocs,
       getDoc,
       addDoc,
+      setDoc,
       updateDoc,
       deleteDoc,
       doc,
@@ -2862,6 +3182,20 @@
     let publicApplications = [];
 
     let adminApplications = [];
+
+    let credentialApplicationId = null;
+    let credentialApplicationName = "";
+    let credentialPassword = "";
+    let credentialNote = "";
+    let credentialPasswordVisible = false;
+    let credentialEditMode = false;
+    let credentialLocked = false;
+    let credentialEncryptedPayload = null;
+    let credentialUnlockPurpose = "view";
+    let credentialMasterPassword = "";
+
+    const CREDENTIAL_CRYPTO_VERSION = 1;
+    const CREDENTIAL_PBKDF2_ITERATIONS = 600000;
 
     let adminSearchText = "";
     let adminCategoryFilter = "";
@@ -3864,7 +4198,7 @@
         <tr>
 
           <td
-            colspan="8"
+            colspan="9"
             style="
               text-align:center;
               padding:30px;
@@ -3924,7 +4258,7 @@
           <tr>
 
             <td
-              colspan="8"
+              colspan="9"
               style="
                 text-align:center;
                 padding:30px;
@@ -3966,7 +4300,7 @@
           <tr>
 
             <td
-              colspan="8"
+              colspan="9"
               style="
                 text-align:center;
                 padding:35px;
@@ -3990,7 +4324,7 @@
       if (filteredApplications.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="8" style="text-align:center;padding:35px;color:#6b7280;">
+            <td colspan="9" style="text-align:center;padding:35px;color:#6b7280;">
               Tidak ada aplikasi yang sesuai filter.
             </td>
           </tr>
@@ -4141,6 +4475,20 @@
 
 
                   <td>
+                    <button
+                      type="button"
+                      class="table-btn table-btn-login"
+                      data-login-app="${escapeAttribute(
+                        application.id
+                      )}"
+                      title="Lihat atau kelola informasi login aplikasi"
+                    >
+                      🔐 Login
+                    </button>
+                  </td>
+
+
+                  <td>
 
                     <div
                       class="table-actions"
@@ -4173,8 +4521,8 @@
                       >
                         ${
                           isActive
-                            ? "Nonaktifkan"
-                            : "Aktifkan"
+                            ? "Sembunyikan"
+                            : "Tampilkan"
                         }
                       </button>
 
@@ -4903,9 +5251,9 @@
 
         newValue
 
-          ? `Aktifkan aplikasi "${application.name}"?`
+          ? `Tampilkan aplikasi "${application.name}" di Portal?`
 
-          : `Nonaktifkan aplikasi "${application.name}"?`;
+          : `Sembunyikan aplikasi "${application.name}" dari Portal?`;
 
 
       if (
@@ -4947,9 +5295,9 @@
 
           newValue
 
-            ? "Aplikasi berhasil diaktifkan."
+            ? "Aplikasi berhasil ditampilkan."
 
-            : "Aplikasi berhasil dinonaktifkan.",
+            : "Aplikasi berhasil disembunyikan.",
 
           "success"
 
@@ -5032,6 +5380,20 @@
           );
 
 
+        const credentialRef = doc(
+          db,
+          "applicationCredentials",
+          applicationId
+        );
+
+        try {
+          await deleteDoc(credentialRef);
+        } catch (credentialDeleteError) {
+          if (credentialDeleteError?.code !== "not-found") {
+            throw credentialDeleteError;
+          }
+        }
+
         await deleteDoc(
           applicationRef
         );
@@ -5070,6 +5432,11 @@
     ====================================================== */
 
     async function handleLogout() {
+
+      credentialMasterPassword = "";
+      credentialEncryptedPayload = null;
+      credentialPassword = "";
+      credentialNote = "";
 
       if (!auth) {
         return;
@@ -5299,6 +5666,71 @@
         });
 
 
+      $("credentialRevealButton")
+        .addEventListener(
+          "click",
+          toggleCredentialPasswordVisibility
+        );
+
+      $("credentialCopyButton")
+        .addEventListener(
+          "click",
+          copyCredentialPassword
+        );
+
+      $("credentialEditButton")
+        .addEventListener(
+          "click",
+          enterCredentialEditMode
+        );
+
+      $("credentialCancelEditButton")
+        .addEventListener(
+          "click",
+          () => setCredentialEditMode(false)
+        );
+
+      $("credentialSaveButton")
+        .addEventListener(
+          "click",
+          saveCredential
+        );
+
+      $("credentialUnlockButton")
+        .addEventListener(
+          "click",
+          () => requestMasterPassword("view")
+        );
+
+      $("masterPasswordConfirmButton")
+        .addEventListener(
+          "click",
+          handleMasterPasswordConfirm
+        );
+
+      $("masterPasswordCancelButton")
+        .addEventListener(
+          "click",
+          closeMasterPasswordModal
+        );
+
+      $("closeMasterPasswordButton")
+        .addEventListener(
+          "click",
+          closeMasterPasswordModal
+        );
+
+      $("masterPasswordInput")
+        .addEventListener(
+          "keydown",
+          (event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              handleMasterPasswordConfirm();
+            }
+          }
+        );
+
       $("applicationForm")
         .addEventListener(
           "submit",
@@ -5320,6 +5752,23 @@
 
             openApplication(
               openButton.dataset.openApp
+            );
+
+            return;
+
+          }
+
+
+          const loginButton =
+            event.target.closest(
+              "[data-login-app]"
+            );
+
+
+          if (loginButton) {
+
+            openCredentialModal(
+              loginButton.dataset.loginApp
             );
 
             return;
@@ -5430,6 +5879,782 @@
 
       // Klik area di luar kotak modal tidak menutup modal.
       // Modal ditutup hanya melalui tombol ×, Batal, atau fungsi closeModal().
+
+    }
+
+
+    /* =====================================================
+       ENCRYPTED APPLICATION LOGIN NOTES
+    ====================================================== */
+
+    async function deriveCredentialKey(masterPassword, saltBytes) {
+
+      const passwordBytes =
+        new TextEncoder().encode(masterPassword);
+
+      const material =
+        await crypto.subtle.importKey(
+          "raw",
+          passwordBytes,
+          "PBKDF2",
+          false,
+          ["deriveKey"]
+        );
+
+      return crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: saltBytes,
+          iterations: CREDENTIAL_PBKDF2_ITERATIONS,
+          hash: "SHA-256"
+        },
+        material,
+        {
+          name: "AES-GCM",
+          length: 256
+        },
+        false,
+        ["encrypt", "decrypt"]
+      );
+
+    }
+
+
+    function bytesToBase64(bytes) {
+
+      let binary = "";
+
+      const chunkSize = 0x8000;
+
+      for (
+        let index = 0;
+        index < bytes.length;
+        index += chunkSize
+      ) {
+        binary += String.fromCharCode(
+          ...bytes.subarray(
+            index,
+            Math.min(index + chunkSize, bytes.length)
+          )
+        );
+      }
+
+      return btoa(binary);
+
+    }
+
+
+    function base64ToBytes(value) {
+
+      const binary = atob(value);
+      const bytes = new Uint8Array(binary.length);
+
+      for (let index = 0; index < binary.length; index++) {
+        bytes[index] = binary.charCodeAt(index);
+      }
+
+      return bytes;
+
+    }
+
+
+    async function encryptCredentialData(data, masterPassword) {
+
+      const salt =
+        crypto.getRandomValues(
+          new Uint8Array(16)
+        );
+
+      const iv =
+        crypto.getRandomValues(
+          new Uint8Array(12)
+        );
+
+      const key =
+        await deriveCredentialKey(
+          masterPassword,
+          salt
+        );
+
+      const plaintext =
+        new TextEncoder().encode(
+          JSON.stringify(data)
+        );
+
+      const ciphertext =
+        await crypto.subtle.encrypt(
+          {
+            name: "AES-GCM",
+            iv
+          },
+          key,
+          plaintext
+        );
+
+      return {
+        cryptoVersion: CREDENTIAL_CRYPTO_VERSION,
+        salt: bytesToBase64(salt),
+        iv: bytesToBase64(iv),
+        ciphertext: bytesToBase64(
+          new Uint8Array(ciphertext)
+        )
+      };
+
+    }
+
+
+    async function decryptCredentialData(payload, masterPassword) {
+
+      if (
+        !payload ||
+        Number(payload.cryptoVersion) !==
+          CREDENTIAL_CRYPTO_VERSION ||
+        !payload.salt ||
+        !payload.iv ||
+        !payload.ciphertext
+      ) {
+        throw new Error(
+          "Format credential terenkripsi tidak valid."
+        );
+      }
+
+      const salt =
+        base64ToBytes(payload.salt);
+
+      const iv =
+        base64ToBytes(payload.iv);
+
+      const ciphertext =
+        base64ToBytes(payload.ciphertext);
+
+      const key =
+        await deriveCredentialKey(
+          masterPassword,
+          salt
+        );
+
+      const plaintext =
+        await crypto.subtle.decrypt(
+          {
+            name: "AES-GCM",
+            iv
+          },
+          key,
+          ciphertext
+        );
+
+      return JSON.parse(
+        new TextDecoder().decode(plaintext)
+      );
+
+    }
+
+
+    function resetCredentialReadView() {
+
+      credentialLocked = false;
+      credentialEncryptedPayload = null;
+      credentialPassword = "";
+      credentialNote = "";
+      credentialPasswordVisible = false;
+
+      $("credentialLoginValue").textContent = "-";
+      $("credentialPasswordDisplay").value = "";
+      $("credentialPasswordDisplay").type = "password";
+      $("credentialNoteValue").textContent = "-";
+      $("credentialRevealButton").textContent = "👁";
+      $("credentialRevealButton").title = "Tampilkan password";
+      $("credentialCopyButton").disabled = true;
+      $("credentialLocked").style.display = "none";
+      $("credentialReadView").style.display = "block";
+      $("credentialEmpty").style.display = "none";
+      $("credentialEditButton").disabled = false;
+
+    }
+
+
+    function renderUnlockedCredential(data) {
+
+      credentialLocked = false;
+      credentialPassword = String(data?.password || "");
+      credentialNote = String(data?.note || "");
+
+      $("credentialLoginValue").textContent =
+        String(data?.login || "-") || "-";
+
+      $("credentialPasswordDisplay").value =
+        credentialPassword;
+
+      $("credentialPasswordDisplay").type = "password";
+
+      $("credentialNoteValue").textContent =
+        credentialNote || "-";
+
+      $("credentialRevealButton").textContent = "👁";
+      $("credentialRevealButton").title = "Tampilkan password";
+      $("credentialCopyButton").disabled = !credentialPassword;
+      $("credentialLocked").style.display = "none";
+      $("credentialReadView").style.display = "block";
+      $("credentialEditButton").disabled = false;
+      $("credentialEditButton").textContent = "✏️ Edit Catatan";
+
+      $("credentialEmpty").style.display =
+        data?.login || data?.password || data?.note
+          ? "none"
+          : "block";
+
+    }
+
+
+    async function openCredentialModal(applicationId) {
+
+      if (!currentAdmin || !db) {
+        showToast("Akses hanya untuk Admin.", "warning");
+        return;
+      }
+
+      const application =
+        adminApplications.find(
+          (item) => item.id === applicationId
+        );
+
+      if (!application) {
+        showToast("Data aplikasi tidak ditemukan.", "error");
+        return;
+      }
+
+      credentialApplicationId = applicationId;
+      credentialApplicationName =
+        application.name || "Aplikasi";
+
+      $("credentialAppName").textContent =
+        credentialApplicationName;
+
+      $("credentialAppIcon").textContent =
+        application.icon || "🔐";
+
+      resetCredentialReadView();
+      setCredentialEditMode(false);
+      openModal("credentialModal");
+
+      try {
+
+        const credentialRef = doc(
+          db,
+          "applicationCredentials",
+          applicationId
+        );
+
+        const snapshot =
+          await getDoc(credentialRef);
+
+        if (!snapshot.exists()) {
+
+          $("credentialEmpty").style.display = "block";
+          $("credentialEditButton").textContent =
+            "＋ Tambah Catatan";
+
+          return;
+
+        }
+
+        const data = snapshot.data();
+
+        if (
+          !data.encrypted ||
+          !data.cryptoVersion ||
+          !data.salt ||
+          !data.iv ||
+          !data.ciphertext
+        ) {
+          $("credentialLocked").style.display = "block";
+          $("credentialReadView").style.display = "none";
+          $("credentialEditButton").disabled = true;
+          showToast(
+            "Catatan login lama tidak terenkripsi. Buat ulang catatan ini agar aman.",
+            "warning"
+          );
+          return;
+        }
+
+        credentialEncryptedPayload = data;
+
+        if (credentialMasterPassword) {
+          try {
+            const decrypted =
+              await decryptCredentialData(
+                data,
+                credentialMasterPassword
+              );
+
+            renderUnlockedCredential(
+              decrypted
+            );
+
+          } catch (error) {
+            console.warn(
+              "Credential auto unlock failed:",
+              error
+            );
+
+            credentialMasterPassword = "";
+            credentialLocked = true;
+            $("credentialLocked").style.display = "block";
+            $("credentialReadView").style.display = "none";
+            $("credentialEditButton").disabled = true;
+          }
+
+        } else {
+
+          credentialLocked = true;
+          $("credentialLocked").style.display = "block";
+          $("credentialReadView").style.display = "none";
+          $("credentialEditButton").disabled = true;
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Load credential note error:",
+          error
+        );
+
+        closeModal("credentialModal");
+        showToast(
+          getFirestoreErrorMessage(error),
+          "error"
+        );
+
+      }
+
+    }
+
+
+    function requestMasterPassword(purpose = "view") {
+
+      if (!currentAdmin) {
+        showToast("Akses hanya untuk Admin.", "warning");
+        return;
+      }
+
+      credentialUnlockPurpose = purpose;
+
+      $("masterPasswordInput").value = "";
+
+      $("masterPasswordTitle").textContent =
+        purpose === "edit"
+          ? "Buka Catatan Login"
+          : "Master Password Portal";
+
+      $("masterPasswordConfirmButton").textContent =
+        purpose === "edit"
+          ? "🔓 Buka & Edit"
+          : "🔓 Buka Catatan";
+
+      openModal("masterPasswordModal");
+
+      setTimeout(
+        () => $("masterPasswordInput").focus(),
+        80
+      );
+
+    }
+
+
+    function closeMasterPasswordModal() {
+
+      closeModal("masterPasswordModal");
+      $("masterPasswordInput").value = "";
+
+    }
+
+
+    async function handleMasterPasswordConfirm() {
+
+      const masterPassword =
+        $("masterPasswordInput").value;
+
+      if (masterPassword.length < 8) {
+        showToast(
+          "Master Password minimal 8 karakter.",
+          "warning"
+        );
+        return;
+      }
+
+      const button =
+        $("masterPasswordConfirmButton");
+
+      button.disabled = true;
+      button.textContent = "Memverifikasi...";
+
+      try {
+
+        if (credentialEncryptedPayload) {
+
+          await decryptCredentialData(
+            credentialEncryptedPayload,
+            masterPassword
+          );
+
+        }
+
+        credentialMasterPassword =
+          masterPassword;
+
+        closeMasterPasswordModal();
+
+        if (credentialApplicationId) {
+
+          if (credentialEncryptedPayload) {
+
+            const decrypted =
+              await decryptCredentialData(
+                credentialEncryptedPayload,
+                credentialMasterPassword
+              );
+
+            renderUnlockedCredential(
+              decrypted
+            );
+
+          } else {
+
+            $("credentialLocked").style.display = "none";
+            $("credentialReadView").style.display = "block";
+            $("credentialEditButton").disabled = false;
+
+          }
+
+          if (
+            credentialUnlockPurpose ===
+            "edit"
+          ) {
+            setCredentialEditMode(true);
+          }
+
+        }
+
+        showToast(
+          "Catatan login berhasil dibuka.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Master password error:",
+          error
+        );
+
+        credentialMasterPassword = "";
+
+        showToast(
+          "Master Password salah atau catatan tidak dapat dibuka.",
+          "error"
+        );
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent =
+          credentialUnlockPurpose === "edit"
+            ? "🔓 Buka & Edit"
+            : "🔓 Buka Catatan";
+
+      }
+
+    }
+
+
+    function enterCredentialEditMode() {
+
+      if (!credentialMasterPassword) {
+        requestMasterPassword("edit");
+        return;
+      }
+
+      setCredentialEditMode(true);
+
+    }
+
+
+    function setCredentialEditMode(isEditing) {
+
+      credentialEditMode = isEditing;
+
+      const readView =
+        $("credentialReadView");
+
+      const editView =
+        $("credentialEditView");
+
+      const editButton =
+        $("credentialEditButton");
+
+      const saveButton =
+        $("credentialSaveButton");
+
+      const cancelButton =
+        $("credentialCancelEditButton");
+
+      if (
+        !readView ||
+        !editView ||
+        !editButton ||
+        !saveButton ||
+        !cancelButton
+      ) {
+        return;
+      }
+
+      readView.style.display =
+        isEditing ? "none" : "block";
+
+      editView.style.display =
+        isEditing ? "block" : "none";
+
+      editButton.style.display =
+        isEditing ? "none" : "inline-flex";
+
+      saveButton.style.display =
+        isEditing ? "inline-flex" : "none";
+
+      cancelButton.style.display =
+        isEditing ? "inline-flex" : "none";
+
+      if (isEditing) {
+
+        $("credentialLoginInput").value =
+          $("credentialLoginValue").textContent === "-"
+            ? ""
+            : $("credentialLoginValue").textContent;
+
+        $("credentialPasswordInput").value =
+          credentialPassword;
+
+        $("credentialNoteInput").value =
+          credentialNote;
+
+        setTimeout(
+          () => $("credentialLoginInput").focus(),
+          80
+        );
+
+      }
+
+    }
+
+
+    function toggleCredentialPasswordVisibility() {
+
+      const input =
+        $("credentialPasswordDisplay");
+
+      const button =
+        $("credentialRevealButton");
+
+      if (!input || !button) {
+        return;
+      }
+
+      credentialPasswordVisible =
+        !credentialPasswordVisible;
+
+      input.type =
+        credentialPasswordVisible
+          ? "text"
+          : "password";
+
+      button.textContent =
+        credentialPasswordVisible
+          ? "🙈"
+          : "👁";
+
+      button.title =
+        credentialPasswordVisible
+          ? "Sembunyikan password"
+          : "Tampilkan password";
+
+    }
+
+
+    async function copyCredentialPassword() {
+
+      if (!credentialPassword) {
+        showToast(
+          "Belum ada password untuk disalin.",
+          "warning"
+        );
+        return;
+      }
+
+      try {
+
+        await navigator.clipboard.writeText(
+          credentialPassword
+        );
+
+        showToast(
+          "Password berhasil disalin.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Copy credential error:",
+          error
+        );
+
+        showToast(
+          "Password tidak dapat disalin dari browser ini.",
+          "warning"
+        );
+
+      }
+
+    }
+
+
+    async function saveCredential() {
+
+      if (
+        !currentAdmin ||
+        !db ||
+        !credentialApplicationId
+      ) {
+        return;
+      }
+
+      if (!credentialMasterPassword) {
+        requestMasterPassword("edit");
+        return;
+      }
+
+      const login =
+        $("credentialLoginInput").value.trim();
+
+      const password =
+        $("credentialPasswordInput").value;
+
+      const note =
+        $("credentialNoteInput").value.trim();
+
+      if (!login || !password) {
+        showToast(
+          "Login dan password wajib diisi.",
+          "warning"
+        );
+        return;
+      }
+
+      const saveButton =
+        $("credentialSaveButton");
+
+      saveButton.disabled = true;
+      saveButton.textContent =
+        "Mengenkripsi...";
+
+      try {
+
+        const encrypted =
+          await encryptCredentialData(
+            {
+              login,
+              password,
+              note
+            },
+            credentialMasterPassword
+          );
+
+        const credentialRef =
+          doc(
+            db,
+            "applicationCredentials",
+            credentialApplicationId
+          );
+
+        await setDoc(
+          credentialRef,
+          {
+            applicationId:
+              credentialApplicationId,
+            ownerUid:
+              currentUser.uid,
+            encrypted: true,
+            cryptoVersion:
+              encrypted.cryptoVersion,
+            salt:
+              encrypted.salt,
+            iv:
+              encrypted.iv,
+            ciphertext:
+              encrypted.ciphertext,
+            updatedAt:
+              serverTimestamp(),
+            updatedBy:
+              currentUser.uid
+          }
+        );
+
+        credentialEncryptedPayload = {
+          ...encrypted,
+          ownerUid: currentUser.uid,
+          applicationId: credentialApplicationId,
+          encrypted: true
+        };
+
+        credentialPassword = password;
+        credentialNote = note;
+
+        $("credentialLoginValue").textContent =
+          login;
+
+        $("credentialPasswordDisplay").value =
+          password;
+
+        $("credentialPasswordDisplay").type =
+          "password";
+
+        $("credentialNoteValue").textContent =
+          note || "-";
+
+        credentialPasswordVisible = false;
+
+        $("credentialRevealButton").textContent = "👁";
+        $("credentialRevealButton").title = "Tampilkan password";
+        $("credentialCopyButton").disabled = false;
+        $("credentialEmpty").style.display = "none";
+        $("credentialLocked").style.display = "none";
+
+        setCredentialEditMode(false);
+
+        showToast(
+          "Catatan login berhasil disimpan terenkripsi.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Save encrypted credential note error:",
+          error
+        );
+
+        showToast(
+          getFirestoreErrorMessage(error),
+          "error"
+        );
+
+      } finally {
+
+        saveButton.disabled = false;
+        saveButton.textContent =
+          "💾 Simpan Catatan";
+
+      }
 
     }
 
