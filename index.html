@@ -2886,6 +2886,14 @@
           <button type="button" class="btn btn-secondary" id="regenerateRecoveryCodeButton">🆘 Buat Kode Baru</button>
         </div>
 
+        <div class="security-action-card">
+          <div>
+            <div class="security-action-title">Migrasikan Catatan Login</div>
+            <div class="security-action-text">Gunakan sekali dengan Master Password lama untuk memastikan catatan login lama memiliki Recovery Encryption.</div>
+          </div>
+          <button type="button" class="btn btn-secondary" id="migrateCredentialsButton">🔄 Migrasikan</button>
+        </div>
+
         <div class="security-warning">
           Master Password dan Recovery Code tidak dapat ditampilkan kembali dari Firestore. Simpan Recovery Code di tempat aman.
         </div>
@@ -6031,6 +6039,12 @@
           regenerateRecoveryCode
         );
 
+      $("migrateCredentialsButton")
+        .addEventListener(
+          "click",
+          migrateCredentialNotes
+        );
+
       $("recoverMasterPasswordButton")
         .addEventListener(
           "click",
@@ -7037,6 +7051,16 @@
     }
 
 
+    async function migrateCredentialNotes() {
+
+      if (!currentAdmin || !currentUser || !db) return;
+
+      credentialUnlockPurpose = "migrate";
+      requestMasterPassword("migrate");
+
+    }
+
+
     async function regenerateRecoveryCode() {
 
       if (!currentAdmin || !currentUser || !db) return;
@@ -7149,6 +7173,49 @@
     }
 
 
+    async function getCredentialRecoveryReadiness() {
+
+      if (!currentUser || !db) {
+        return { ready: false, missing: [], total: 0 };
+      }
+
+      const snapshot = await getDocs(
+        query(
+          collection(db, "applicationCredentials"),
+          where("ownerUid", "==", currentUser.uid)
+        )
+      );
+
+      const missing = [];
+
+      for (const record of snapshot.docs) {
+        const data = record.data();
+        const hasRecoveryEncryption =
+          data.encrypted === true
+          && Boolean(data.recoverySalt)
+          && Boolean(data.recoveryIv)
+          && Boolean(data.recoveryCiphertext);
+
+        if (!hasRecoveryEncryption) {
+          const applicationName = String(
+            adminApplications.find((item) => item.id === record.id)?.name
+              || data.applicationName
+              || data.applicationId
+              || record.id
+          );
+          missing.push(applicationName);
+        }
+      }
+
+      return {
+        ready: missing.length === 0,
+        missing,
+        total: snapshot.size
+      };
+
+    }
+
+
     async function recoverMasterPassword() {
 
       if (!currentAdmin || !currentUser || !db) return;
@@ -7169,7 +7236,7 @@
 
       const button = $("recoverMasterPasswordButton");
       button.disabled = true;
-      button.textContent = "🆘 Memulihkan...";
+      button.textContent = "🆘 Memeriksa...";
 
       try {
 
@@ -7182,6 +7249,24 @@
         if (!(await verifyRecoveryCode(code))) {
           throw new Error("Recovery Code salah atau sudah tidak berlaku.");
         }
+
+        // Recovery harus berhenti sebelum perubahan apa pun jika masih ada
+        // credential lama yang belum mempunyai recovery encryption.
+        // Hal ini mencegah partial recovery: sebagian credential berubah
+        // sementara sebagian lainnya tetap terkunci.
+        const readiness = await getCredentialRecoveryReadiness();
+
+        if (!readiness.ready) {
+          const detail = readiness.missing.length
+            ? ` Catatan yang perlu dimigrasikan: ${readiness.missing.join(", ")}.`
+            : "";
+
+          throw new Error(
+            `RECOVERY_NEEDS_MIGRATION${detail}`
+          );
+        }
+
+        button.textContent = "🆘 Memulihkan...";
 
         const recoverySecret = await unwrapRecoverySecretWithRecoveryCode(
           code,
@@ -7228,8 +7313,22 @@
         );
 
       } catch (error) {
-        console.error("Recover master password error:", error);
-        showToast(error.message || getFirestoreErrorMessage(error), "error");
+        const message = String(error?.message || "");
+
+        if (message.startsWith("RECOVERY_NEEDS_MIGRATION")) {
+          const detail = message.replace("RECOVERY_NEEDS_MIGRATION", "").trim();
+          showToast(
+            `Recovery belum dapat digunakan.${detail} Masuk ke Keamanan → Migrasikan Catatan Login dan masukkan Master Password lama satu kali. Setelah migrasi selesai, gunakan Recovery Code kembali.`,
+            "warning"
+          );
+        } else if (message.includes("Credential belum memiliki Recovery Encryption")) {
+          showToast(
+            "Recovery belum siap. Migrasikan semua catatan login terlebih dahulu dengan Master Password lama.",
+            "warning"
+          );
+        } else {
+          showToast(message || getFirestoreErrorMessage(error), "error");
+        }
       } finally {
         button.disabled = false;
         button.textContent = "🆘 Pulihkan Akses";
@@ -7481,14 +7580,18 @@
           ? "Buka Catatan Login"
           : purpose === "recovery-regenerate"
             ? "Verifikasi Master Password"
-            : "Master Password Portal";
+            : purpose === "migrate"
+              ? "Migrasikan Catatan Login"
+              : "Master Password Portal";
 
       $("masterPasswordConfirmButton").textContent =
         purpose === "edit"
           ? "🔓 Buka & Edit"
           : purpose === "recovery-regenerate"
             ? "🔓 Verifikasi"
-            : "🔓 Buka Catatan";
+            : purpose === "migrate"
+              ? "🔄 Migrasikan"
+              : "🔓 Buka Catatan";
 
       openModal("masterPasswordModal");
 
@@ -7575,6 +7678,15 @@
 
         if (purpose === "recovery-regenerate") {
           await regenerateRecoveryCodeCore();
+        }
+
+        if (purpose === "migrate") {
+          closeModal("securityModal");
+          showToast(
+            "Migrasi catatan login selesai. Catatan yang dapat dibuka dengan Master Password sudah dilengkapi Recovery Encryption.",
+            "success"
+          );
+          return;
         }
 
         showToast("Catatan login berhasil dibuka.", "success");
