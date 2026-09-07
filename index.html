@@ -6568,19 +6568,61 @@
 
       const existing = await getSecurityDocument();
 
-      if (existing && existing.cryptoVersion === SECURITY_CRYPTO_VERSION) {
+      // Security format sudah ada. Pastikan recovery key dapat dibuka
+      // dan selalu lakukan migrasi credential lama yang belum memiliki
+      // recovery encryption. Ini mencegah error saat Recovery Code dipakai.
+      if (existing && Number(existing.cryptoVersion) === SECURITY_CRYPTO_VERSION) {
+
         securityDocument = existing;
-        const recoverySecret = await unwrapRecoverySecretWithMaster(
+
+        let recoverySecret;
+        let recoveryCode = "";
+        let regeneratedRecovery = false;
+
+        try {
+          recoverySecret = await unwrapRecoverySecretWithMaster(
+            masterPassword,
+            existing
+          );
+        } catch (error) {
+          // Security lama mungkin terbentuk sebagian (misalnya verifier ada
+          // tetapi recovery wrap belum ada). Karena Master Password valid,
+          // buat ulang recovery secret + recovery code secara aman.
+          const masterValid = await verifyCurrentMasterPassword(
+            masterPassword
+          );
+
+          if (!masterValid) {
+            throw error;
+          }
+
+          recoverySecret = generateRecoverySecret();
+          recoveryCode = generateRecoveryCode();
+          regeneratedRecovery = true;
+
+          await saveSecurityDocument(
+            masterPassword,
+            recoverySecret,
+            recoveryCode,
+            true
+          );
+        }
+
+        await migrateCredentialsToRecovery(
           masterPassword,
-          existing
+          recoverySecret
         );
+
         return {
-          created: false,
-          recoveryCode: "",
+          created: regeneratedRecovery,
+          recoveryCode,
           recoverySecret
         };
       }
 
+      // Security belum ada / masih format lama. Buat security baru lalu
+      // langsung migrasikan semua credential milik Admin menggunakan
+      // Master Password yang baru diverifikasi.
       const recoveryCode = generateRecoveryCode();
       const recoverySecret = generateRecoverySecret();
 
@@ -6607,7 +6649,7 @@
 
     async function migrateCredentialsToRecovery(masterPassword, recoverySecret) {
 
-      if (!currentUser || !db) return;
+      if (!currentUser || !db || !masterPassword || !recoverySecret) return;
 
       const snapshot = await getDocs(
         query(
@@ -6619,14 +6661,36 @@
       for (const record of snapshot.docs) {
 
         const data = record.data();
-        let decrypted;
+
+        // Credential yang sudah mempunyai recovery encryption tidak perlu
+        // ditulis ulang. Ini mengurangi write dan mencegah perubahan yang
+        // tidak perlu.
+        if (
+          data.encrypted === true
+          && data.recoverySalt
+          && data.recoveryIv
+          && data.recoveryCiphertext
+        ) {
+          continue;
+        }
+
+        let decrypted = null;
 
         try {
+          // Mendukung credential terenkripsi versi 1 dan versi 2.
           decrypted = await decryptCredentialData(
             data,
             masterPassword
           );
-        } catch {
+        } catch (error) {
+          // Credential plaintext dari versi sangat lama tidak bisa dibaca
+          // oleh versi ini apabila Rules juga tidak mengizinkan aksesnya.
+          // Jangan merusak record tersebut; Admin dapat membuat ulang
+          // catatannya setelah membuka aplikasi terkait.
+          console.warn(
+            `Credential migration skipped for ${record.id}:`,
+            error
+          );
           continue;
         }
 
@@ -6640,7 +6704,7 @@
           recoverySecret
         );
 
-        await updateDoc(record.ref, {
+        const migratedPayload = {
           cryptoVersion: CREDENTIAL_CRYPTO_VERSION,
           salt: masterEncrypted.salt,
           iv: masterEncrypted.iv,
@@ -6650,20 +6714,20 @@
           recoveryCiphertext: recoveryEncrypted.ciphertext,
           encrypted: true,
           ownerUid: currentUser.uid,
+          applicationId: data.applicationId || record.id,
           updatedAt: serverTimestamp(),
           updatedBy: currentUser.uid
-        });
+        };
+
+        await updateDoc(
+          record.ref,
+          migratedPayload
+        );
 
         if (record.id === credentialApplicationId) {
           credentialEncryptedPayload = {
             ...data,
-            cryptoVersion: CREDENTIAL_CRYPTO_VERSION,
-            salt: masterEncrypted.salt,
-            iv: masterEncrypted.iv,
-            ciphertext: masterEncrypted.ciphertext,
-            recoverySalt: recoveryEncrypted.salt,
-            recoveryIv: recoveryEncrypted.iv,
-            recoveryCiphertext: recoveryEncrypted.ciphertext
+            ...migratedPayload
           };
         }
       }
@@ -6707,22 +6771,35 @@
       );
 
       let count = 0;
+      const skipped = [];
 
       for (const record of snapshot.docs) {
 
         const data = record.data();
         let decrypted;
 
-        if (oldMasterPassword) {
-          decrypted = await decryptCredentialData(
-            data,
-            oldMasterPassword
+        try {
+          if (oldMasterPassword) {
+            decrypted = await decryptCredentialData(
+              data,
+              oldMasterPassword
+            );
+          } else {
+            decrypted = await decryptCredentialWithRecovery(
+              data,
+              recoverySecret
+            );
+          }
+        } catch (error) {
+          const applicationName = String(
+            adminApplications.find((item) => item.id === record.id)?.name
+              || data.applicationName
+              || data.applicationId
+              || record.id
           );
-        } else {
-          decrypted = await decryptCredentialWithRecovery(
-            data,
-            recoverySecret
-          );
+
+          skipped.push(applicationName);
+          continue;
         }
 
         const masterEncrypted = await encryptCredentialData(
@@ -6744,6 +6821,8 @@
           recoveryIv: recoveryEncrypted.iv,
           recoveryCiphertext: recoveryEncrypted.ciphertext,
           encrypted: true,
+          ownerUid: currentUser.uid,
+          applicationId: data.applicationId || record.id,
           updatedAt: serverTimestamp(),
           updatedBy: currentUser.uid
         });
@@ -6762,6 +6841,12 @@
             recoveryCiphertext: recoveryEncrypted.ciphertext
           };
         }
+      }
+
+      if (skipped.length > 0) {
+        throw new Error(
+          `Ada ${skipped.length} catatan login yang belum memiliki Recovery Encryption: ${skipped.join(", ")}. Buka dan simpan ulang catatan tersebut dengan Master Password lama terlebih dahulu.`
+        );
       }
 
       return count;
@@ -7289,6 +7374,52 @@
                 data,
                 credentialMasterPassword
               );
+
+            if (
+              !data.recoverySalt
+              || !data.recoveryIv
+              || !data.recoveryCiphertext
+            ) {
+              // Upgrade credential lama segera setelah berhasil dibuka.
+              // Dengan begitu Recovery Code berikutnya tidak akan gagal.
+              if (!credentialRecoverySecret) {
+                credentialRecoverySecret = await unwrapRecoverySecretWithMaster(
+                  credentialMasterPassword,
+                  securityDocument || await getSecurityDocument()
+                );
+              }
+
+              const recoveryEncrypted = await encryptCredentialData(
+                decrypted,
+                credentialRecoverySecret
+              );
+
+              await updateDoc(
+                credentialRef,
+                {
+                  cryptoVersion: CREDENTIAL_CRYPTO_VERSION,
+                  recoverySalt: recoveryEncrypted.salt,
+                  recoveryIv: recoveryEncrypted.iv,
+                  recoveryCiphertext: recoveryEncrypted.ciphertext,
+                  encrypted: true,
+                  ownerUid: currentUser.uid,
+                  applicationId,
+                  updatedAt: serverTimestamp(),
+                  updatedBy: currentUser.uid
+                }
+              );
+
+              credentialEncryptedPayload = {
+                ...data,
+                cryptoVersion: CREDENTIAL_CRYPTO_VERSION,
+                recoverySalt: recoveryEncrypted.salt,
+                recoveryIv: recoveryEncrypted.iv,
+                recoveryCiphertext: recoveryEncrypted.ciphertext,
+                encrypted: true,
+                ownerUid: currentUser.uid,
+                applicationId
+              };
+            }
 
             renderUnlockedCredential(
               decrypted
