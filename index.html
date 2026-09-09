@@ -2194,8 +2194,11 @@
           type="search"
           id="searchInput"
           class="search-input"
+          name="applicationSearch"
           placeholder="Cari nama aplikasi, kategori, atau keyword..."
           autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
         >
 
       </div>
@@ -3548,9 +3551,37 @@
 
         setupEventListeners();
 
+        resetSearchInput();
+
+        // Some browsers restore/autofill form values shortly after page load.
+        // Re-clear this non-persistent search field without affecting other forms.
+        setTimeout(resetSearchInput, 0);
+        setTimeout(resetSearchInput, 150);
+
         initializeFirebase();
 
       }
+    );
+
+
+    function resetSearchInput() {
+
+      const searchInput = $("searchInput");
+
+      if (!searchInput) {
+        return;
+      }
+
+      searchInput.value = "";
+      searchInput.defaultValue = "";
+
+    }
+
+
+    // Also handle page restoration from browser back/forward cache.
+    window.addEventListener(
+      "pageshow",
+      () => resetSearchInput()
     );
 
 
