@@ -375,6 +375,51 @@
       flex-shrink: 0;
     }
 
+
+    .app-icon-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+      border-radius: inherit;
+    }
+
+    .application-image-uploader {
+      padding: 14px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .application-image-preview {
+      width: 92px;
+      height: 92px;
+      border-radius: 16px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 10px;
+      color: #94a3b8;
+      font-size: 30px;
+    }
+
+    .application-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+    }
+
+    .application-image-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
     .status-badge {
       display: inline-flex;
 
@@ -3149,6 +3194,61 @@
           </div>
 
 
+          <!-- APPLICATION IMAGE -->
+
+          <div class="form-group">
+
+            <label
+              class="form-label"
+              for="applicationImageFile"
+            >
+              Gambar / Logo Aplikasi
+            </label>
+
+            <div class="application-image-uploader">
+
+              <div
+                class="application-image-preview"
+                id="applicationImagePreview"
+                aria-label="Preview gambar aplikasi"
+              >
+                🖼️
+              </div>
+
+              <div class="application-image-actions">
+
+                <label class="btn btn-secondary" for="applicationImageFile">
+                  🖼️ Pilih Gambar
+                </label>
+
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  id="removeApplicationImageButton"
+                  style="display:none;"
+                >
+                  🗑 Hapus Gambar
+                </button>
+
+              </div>
+
+              <input
+                type="file"
+                id="applicationImageFile"
+                accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                style="display:none;"
+              >
+
+              <div class="form-help">
+                PNG, JPG/JPEG, WebP, atau SVG. Maksimal 2 MB.
+                Disarankan logo dengan background transparan.
+              </div>
+
+            </div>
+
+          </div>
+
+
           <!-- COLOR -->
 
           <div class="form-group">
@@ -3440,11 +3540,22 @@
       setDoc,
       updateDoc,
       deleteDoc,
+      deleteField,
       doc,
       serverTimestamp,
       onSnapshot
     } from
       "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+    import {
+      getStorage,
+      ref as storageRef,
+      uploadBytes,
+      getDownloadURL,
+      deleteObject
+    } from
+      "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 
     /* =====================================================
@@ -3480,6 +3591,8 @@
 
     let db = null;
 
+    let storage = null;
+
     let firebaseReady = false;
 
     let currentUser = null;
@@ -3503,6 +3616,19 @@
     let credentialRecoverySecret = "";
     let securityDocument = null;
     let securityRecoveryCode = "";
+
+    let selectedApplicationImageFile = null;
+    let existingApplicationImageUrl = "";
+    let existingApplicationImageStoragePath = "";
+    let removeApplicationImageRequested = false;
+
+    const MAX_APPLICATION_IMAGE_SIZE = 2 * 1024 * 1024;
+    const ALLOWED_APPLICATION_IMAGE_TYPES = [
+      "image/png",
+      "image/jpeg",
+      "image/webp",
+      "image/svg+xml"
+    ];
 
     const CREDENTIAL_CRYPTO_VERSION = 2;
     const LEGACY_CREDENTIAL_CRYPTO_VERSION = 1;
@@ -3605,6 +3731,11 @@
 
         db =
           getFirestore(
+            appInstance
+          );
+
+        storage =
+          getStorage(
             appInstance
           );
 
@@ -4087,7 +4218,11 @@
           <div class="app-card-top">
 
             <div class="app-icon">
-              ${icon}
+              ${
+                isSafeApplicationImageUrl(application.imageUrl)
+                  ? `<img class="app-icon-image" src="${escapeAttribute(application.imageUrl)}" alt="Logo ${name}" loading="lazy">`
+                  : icon
+              }
             </div>
 
             <span
@@ -5013,6 +5148,8 @@
       }
 
 
+      revokeApplicationImagePreviewUrl();
+
       editingApplicationId =
         null;
 
@@ -5034,6 +5171,7 @@
       $("applicationThemeColor").value =
         "#3B82F6";
       updateThemeColorPicker("#3B82F6");
+      resetApplicationImageState();
 
 
       $("applicationVersion").value =
@@ -5151,6 +5289,8 @@
       }
 
 
+      revokeApplicationImagePreviewUrl();
+
       editingApplicationId =
         applicationId;
 
@@ -5189,6 +5329,11 @@
       updateThemeColorPicker(
         editThemeColor
       );
+      existingApplicationImageUrl = String(application.imageUrl || "");
+      existingApplicationImageStoragePath = String(application.imageStoragePath || "");
+      selectedApplicationImageFile = null;
+      removeApplicationImageRequested = false;
+      updateApplicationImagePreview(existingApplicationImageUrl);
 
 
       $("applicationVersion").value =
@@ -5292,6 +5437,9 @@
         normalizeThemeColor(
           $("applicationThemeColor").value
         );
+
+      let savedApplicationId = editingApplicationId || null;
+      let createdNewApplication = false;
 
 
       const version =
@@ -5461,11 +5609,7 @@
             applicationData
           );
 
-
-          showToast(
-            "Aplikasi berhasil diperbarui.",
-            "success"
-          );
+          savedApplicationId = editingApplicationId;
 
         } else {
 
@@ -5473,7 +5617,7 @@
             serverTimestamp();
 
 
-          await addDoc(
+          const createdRef = await addDoc(
             collection(
               db,
               "applications"
@@ -5481,19 +5625,86 @@
             applicationData
           );
 
-
-          showToast(
-            "Aplikasi berhasil ditambahkan.",
-            "success"
-          );
-
+          savedApplicationId = createdRef.id;
+          createdNewApplication = true;
         }
 
+        let imageWarning = "";
+
+        if (savedApplicationId && selectedApplicationImageFile) {
+          try {
+            const uploaded = await uploadApplicationImage(
+              savedApplicationId,
+              selectedApplicationImageFile
+            );
+
+            await updateDoc(
+              doc(db, "applications", savedApplicationId),
+              {
+                imageUrl: uploaded.url,
+                imageStoragePath: uploaded.path,
+                updatedAt: serverTimestamp()
+              }
+            );
+
+            if (existingApplicationImageStoragePath) {
+              await deleteApplicationImageByPath(
+                existingApplicationImageStoragePath,
+                true
+              );
+            }
+          } catch (imageError) {
+            console.error("Application image upload error:", imageError);
+            imageWarning = " Gambar tidak berhasil diunggah; data aplikasi tetap tersimpan.";
+          }
+
+        } else if (
+          savedApplicationId
+          && removeApplicationImageRequested
+          && existingApplicationImageUrl
+        ) {
+
+          try {
+            await updateDoc(
+              doc(db, "applications", savedApplicationId),
+              {
+                imageUrl: deleteField(),
+                imageStoragePath: deleteField(),
+                updatedAt: serverTimestamp()
+              }
+            );
+
+            if (existingApplicationImageStoragePath) {
+              await deleteApplicationImageByPath(
+                existingApplicationImageStoragePath,
+                true
+              );
+            }
+          } catch (imageError) {
+            console.error("Application image removal error:", imageError);
+            imageWarning = " Gambar lama tidak berhasil dihapus.";
+          }
+        }
+
+        if (createdNewApplication) {
+          const message = imageWarning
+            || (selectedApplicationImageFile ? " Gambar berhasil diunggah." : "");
+          showToast(
+            `Aplikasi berhasil ditambahkan.${message}`,
+            imageWarning ? "warning" : "success"
+          );
+        } else {
+          showToast(
+            imageWarning
+              ? `Aplikasi berhasil diperbarui.${imageWarning}`
+              : "Aplikasi berhasil diperbarui.",
+            imageWarning ? "warning" : "success"
+          );
+        }
 
         closeModal(
           "applicationFormModal"
         );
-
 
         await loadAdminApplications();
 
@@ -5711,6 +5922,13 @@
         await deleteDoc(
           applicationRef
         );
+
+        if (application.imageStoragePath) {
+          await deleteApplicationImageByPath(
+            application.imageStoragePath,
+            true
+          );
+        }
 
 
         showToast(
@@ -5968,6 +6186,18 @@
         .addEventListener(
           "input",
           (event) => updateThemeColorPicker(event.target.value)
+        );
+
+      $("applicationImageFile")
+        .addEventListener(
+          "change",
+          handleApplicationImageSelection
+        );
+
+      $("removeApplicationImageButton")
+        .addEventListener(
+          "click",
+          removeApplicationImage
         );
 
       document
@@ -8139,6 +8369,159 @@
         }
       );
 
+    }
+
+
+    /* =====================================================
+       APPLICATION IMAGE UPLOAD
+    ====================================================== */
+
+    function resetApplicationImageState() {
+      selectedApplicationImageFile = null;
+      existingApplicationImageUrl = "";
+      existingApplicationImageStoragePath = "";
+      removeApplicationImageRequested = false;
+
+      const input = $("applicationImageFile");
+      if (input) input.value = "";
+
+      updateApplicationImagePreview("");
+    }
+
+    function isSafeApplicationImageUrl(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return false;
+
+      try {
+        const url = new URL(raw);
+        return url.protocol === "https:";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function updateApplicationImagePreview(imageUrl) {
+      const preview = $("applicationImagePreview");
+      const removeButton = $("removeApplicationImageButton");
+      if (!preview) return;
+
+      if (selectedApplicationImageFile) {
+        const objectUrl = URL.createObjectURL(selectedApplicationImageFile);
+        preview.innerHTML = `<img src="${escapeAttribute(objectUrl)}" alt="Preview gambar aplikasi">`;
+        preview.dataset.objectUrl = objectUrl;
+        if (removeButton) removeButton.style.display = "inline-flex";
+        return;
+      }
+
+      if (isSafeApplicationImageUrl(imageUrl)) {
+        preview.innerHTML = `<img src="${escapeAttribute(imageUrl)}" alt="Preview gambar aplikasi">`;
+        if (removeButton) removeButton.style.display = "inline-flex";
+        return;
+      }
+
+      preview.textContent = "🖼️";
+      if (removeButton) removeButton.style.display = "none";
+    }
+
+    function revokeApplicationImagePreviewUrl() {
+      const preview = $("applicationImagePreview");
+      if (preview && preview.dataset.objectUrl) {
+        try {
+          URL.revokeObjectURL(preview.dataset.objectUrl);
+        } catch (error) {
+          // ignore cleanup errors
+        }
+        delete preview.dataset.objectUrl;
+      }
+    }
+
+    function handleApplicationImageSelection(event) {
+      revokeApplicationImagePreviewUrl();
+
+      const file = event.target.files?.[0] || null;
+
+      if (!file) {
+        selectedApplicationImageFile = null;
+        updateApplicationImagePreview(existingApplicationImageUrl);
+        return;
+      }
+
+      if (!ALLOWED_APPLICATION_IMAGE_TYPES.includes(file.type)) {
+        event.target.value = "";
+        selectedApplicationImageFile = null;
+        updateApplicationImagePreview(existingApplicationImageUrl);
+        showToast("Format gambar tidak didukung. Gunakan PNG, JPG/JPEG, WebP, atau SVG.", "warning");
+        return;
+      }
+
+      if (file.size > MAX_APPLICATION_IMAGE_SIZE) {
+        event.target.value = "";
+        selectedApplicationImageFile = null;
+        updateApplicationImagePreview(existingApplicationImageUrl);
+        showToast("Ukuran gambar maksimal 2 MB.", "warning");
+        return;
+      }
+
+      selectedApplicationImageFile = file;
+      removeApplicationImageRequested = false;
+      updateApplicationImagePreview("");
+    }
+
+    function removeApplicationImage() {
+      revokeApplicationImagePreviewUrl();
+      selectedApplicationImageFile = null;
+      removeApplicationImageRequested = Boolean(existingApplicationImageUrl);
+
+      const input = $("applicationImageFile");
+      if (input) input.value = "";
+
+      if (existingApplicationImageUrl && !removeApplicationImageRequested) {
+        updateApplicationImagePreview(existingApplicationImageUrl);
+        return;
+      }
+
+      updateApplicationImagePreview("");
+    }
+
+    async function uploadApplicationImage(applicationId, file) {
+      if (!storage) throw new Error("Firebase Storage belum siap.");
+
+      const extensionMap = {
+        "image/png": "png",
+        "image/jpeg": "jpg",
+        "image/webp": "webp",
+        "image/svg+xml": "svg"
+      };
+
+      const extension = extensionMap[file.type] || "bin";
+      const path = `application-images/${applicationId}/${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${extension}`;
+      const fileRef = storageRef(storage, path);
+
+      await uploadBytes(fileRef, file, {
+        contentType: file.type,
+        customMetadata: {
+          applicationId: String(applicationId)
+        }
+      });
+
+      const url = await getDownloadURL(fileRef);
+
+      return {
+        path,
+        url
+      };
+    }
+
+    async function deleteApplicationImageByPath(path, silent = false) {
+      if (!storage || !path) return;
+
+      try {
+        await deleteObject(storageRef(storage, path));
+      } catch (error) {
+        if (error?.code !== "storage/object-not-found" && !silent) {
+          throw error;
+        }
+      }
     }
 
 
