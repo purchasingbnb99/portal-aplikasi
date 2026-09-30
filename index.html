@@ -2216,6 +2216,107 @@
     }
 
 </style>
+
+
+  <style id="final-rgb-footer-fix">
+    /* =====================================================
+       FINAL BRAND POLISH — RGB NEON RING + FOOTER LAYER
+       Visual-only changes. No Firebase/business logic touched.
+    ====================================================== */
+
+    .brand-logo {
+      position: relative;
+      isolation: isolate;
+      overflow: visible;
+      z-index: 0;
+    }
+
+    .brand-logo::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      padding: 2px;
+      border-radius: 16px;
+      background:
+        conic-gradient(
+          from 0deg,
+          #ff4d00 0deg,
+          #ffea00 55deg,
+          #37ff7a 115deg,
+          #00e5ff 175deg,
+          #6b5cff 230deg,
+          #ff2bd6 295deg,
+          #ff4d00 360deg
+        );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      filter:
+        drop-shadow(0 0 4px rgba(255, 112, 0, 0.55))
+        drop-shadow(0 0 9px rgba(0, 229, 255, 0.28));
+      animation: rgbLogoRingSpin 7s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .brand-logo-image {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes rgbLogoRingSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Keep the footer in the normal document flow, but above the
+       fixed background and network canvas so it remains readable. */
+    .footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 8px;
+      padding: 18px 24px 24px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+      background: linear-gradient(
+        180deg,
+        rgba(7, 11, 22, 0.30) 0%,
+        rgba(7, 11, 22, 0.68) 100%
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .footer-separator {
+      color: #64748b;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-logo::before {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .brand-logo::before {
+        inset: -2.5px;
+        padding: 1.8px;
+        border-radius: 14px;
+      }
+
+      .footer {
+        padding: 16px 14px 20px;
+        margin-top: 6px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
