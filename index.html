@@ -2317,6 +2317,281 @@
     }
   </style>
 
+
+  <style id="stage1-compact-premium-cards">
+    /* =====================================================
+       STAGE 1 — COMPACT PREMIUM APPLICATION CARDS
+       Visual-only CSS. App number is generated in memory.
+    ====================================================== */
+
+    @property --app-card-angle {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    @keyframes appCardBorderFlow {
+      to { --app-card-angle: 360deg; }
+    }
+
+    @keyframes appCardLightSweep {
+      0%   { transform: translateX(-135%) skewX(-12deg); opacity: 0; }
+      18%  { opacity: 0.62; }
+      100% { transform: translateX(135%) skewX(-12deg); opacity: 0; }
+    }
+
+    @keyframes appCardButtonPulse {
+      0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--app-color) 36%, transparent); }
+      100% { box-shadow: 0 0 0 7px transparent; }
+    }
+
+    .app-card {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: 218px;
+      padding: 16px;
+      border-radius: 19px;
+      transform: translateZ(0);
+      transition:
+        transform 240ms cubic-bezier(.2,.75,.25,1),
+        box-shadow 240ms ease,
+        border-color 240ms ease;
+    }
+
+    .app-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Fine animated color ring follows each card's own themeColor. */
+    .app-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      padding: 2px;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0.18;
+      background: conic-gradient(
+        from var(--app-card-angle),
+        transparent 0deg,
+        color-mix(in srgb, var(--app-color) 48%, transparent) 48deg,
+        rgba(255,255,255,.92) 72deg,
+        color-mix(in srgb, var(--app-color) 72%, transparent) 118deg,
+        transparent 168deg,
+        transparent 250deg,
+        color-mix(in srgb, var(--app-color) 48%, transparent) 310deg,
+        transparent 360deg
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: opacity 220ms ease;
+    }
+
+    /* Soft highlight sweep, triggered only while the card is interacted with. */
+    .app-card::after {
+      content: "";
+      position: absolute;
+      inset: -12% auto -12% -48%;
+      z-index: 0;
+      width: 38%;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,.06) 28%,
+        rgba(255,255,255,.48) 50%,
+        rgba(255,255,255,.08) 70%,
+        transparent 100%
+      );
+      transform: translateX(-135%) skewX(-12deg);
+    }
+
+    .app-card:hover,
+    .app-card:focus-within {
+      transform: translateY(-4px) scale(1.006);
+      border-color: color-mix(in srgb, var(--app-color) 78%, #ffffff);
+      box-shadow:
+        0 17px 34px rgba(2, 6, 23, .28),
+        0 0 24px color-mix(in srgb, var(--app-color) 26%, transparent),
+        0 0 42px color-mix(in srgb, var(--app-color) 12%, transparent);
+    }
+
+    .app-card:hover::before,
+    .app-card:focus-within::before {
+      opacity: 0.96;
+      animation: appCardBorderFlow 4.8s linear infinite;
+    }
+
+    .app-card:hover::after,
+    .app-card:focus-within::after {
+      animation: appCardLightSweep 1.05s ease-out 1;
+    }
+
+    .app-card-top {
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      font-size: 25px;
+      transition:
+        transform 240ms cubic-bezier(.2,.75,.25,1),
+        box-shadow 240ms ease;
+    }
+
+    .app-card:hover .app-icon,
+    .app-card:focus-within .app-icon {
+      transform: translateY(-3px) rotate(-4deg) scale(1.045);
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--app-color) 20%, transparent);
+    }
+
+    .app-status-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .app-status-stack .status-badge {
+      padding: 5px 9px;
+    }
+
+    .app-display-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 19px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--app-color) 78%, #0f172a);
+      background: color-mix(in srgb, var(--app-color) 12%, rgba(255,255,255,.82));
+      border: 1px solid color-mix(in srgb, var(--app-color) 22%, transparent);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .35px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .app-card h3 {
+      margin-top: 13px;
+      font-size: 16px;
+      line-height: 1.28;
+    }
+
+    .app-category {
+      margin-top: 4px;
+      font-size: 11.5px;
+    }
+
+    .app-description {
+      margin-top: 8px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .app-card-bottom {
+      padding-top: 12px;
+      gap: 8px;
+    }
+
+    .app-version {
+      font-size: 10.5px;
+    }
+
+    .app-card .btn {
+      position: relative;
+      min-height: 40px;
+      padding: 0 12px;
+      overflow: hidden;
+      transition:
+        transform 150ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease;
+    }
+
+    .app-card .btn:active:not(:disabled) {
+      transform: scale(.965);
+      animation: appCardButtonPulse 420ms ease-out;
+    }
+
+    /* Keep touch targets comfortable while retaining the compact layout. */
+    @media (max-width: 850px) {
+      .app-card {
+        min-height: 210px;
+        padding: 15px;
+      }
+
+      .app-card h3 {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-card {
+        min-height: 198px;
+        padding: 15px;
+      }
+
+      .app-card .btn {
+        min-height: 42px;
+        padding: 0 12px;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .app-card:hover {
+        transform: none;
+      }
+
+      .app-card:active {
+        transform: scale(.992);
+      }
+
+      .app-card:hover::before,
+      .app-card:hover::after {
+        animation: none;
+        opacity: .18;
+      }
+
+      .app-card:hover .app-icon {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app-card,
+      .app-card::before,
+      .app-card::after,
+      .app-icon,
+      .app-card .btn {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .app-card:hover,
+      .app-card:focus-within,
+      .app-card:hover .app-icon,
+      .app-card:focus-within .app-icon,
+      .app-card .btn:active:not(:disabled) {
+        transform: none !important;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -4062,6 +4337,11 @@
               publicApplications
             );
 
+            // Presentation-only numbering for the complete public catalogue.
+            // It remains stable during search/filter and follows Admin sort order.
+            publicApplications.forEach((application, index) => {
+              application.displayNo = index + 1;
+            });
 
             buildCategoryFilter();
 
@@ -4311,6 +4591,11 @@
           status
         );
 
+      const displayNumber =
+        Number.isInteger(application.displayNo) && application.displayNo > 0
+          ? String(application.displayNo).padStart(2, "0")
+          : "--";
+
 
       const canOpen =
         status === "Aktif";
@@ -4329,11 +4614,19 @@
               ${icon}
             </div>
 
-            <span
-              class="status-badge ${statusClass}"
-            >
-              ${statusText}
-            </span>
+            <div class="app-status-stack">
+              <span
+                class="status-badge ${statusClass}"
+              >
+                ${statusText}
+              </span>
+              <span
+                class="app-display-number"
+                aria-label="Nomor aplikasi ${displayNumber}"
+              >
+                No. ${displayNumber}
+              </span>
+            </div>
 
           </div>
 
