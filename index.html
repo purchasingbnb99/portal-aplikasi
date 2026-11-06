@@ -1363,6 +1363,11 @@
         content: "🔐";
         font-size: 16px;
       }
+
+      .portal-user-header-btn::before {
+        content: "👤";
+        font-size: 16px;
+      }
     }
 
     @media (max-width: 380px) {
@@ -1686,6 +1691,200 @@
       border: 1px solid #dbe3ee;
       border-radius: 8px;
       background: #fff;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .portal-user-header-btn {
+      border-color: #cbd5e1;
+      max-width: 230px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .department-access-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 11px;
+      border: 1px solid #dbe3ee;
+      border-radius: 11px;
+      background: #f8fafc;
+    }
+
+    .department-access-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 6px 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .department-access-option input {
+      accent-color: #2563eb;
+    }
+
+    .department-access-all {
+      grid-column: 1 / -1;
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .portal-user-modal {
+      width: min(760px, 100%);
+    }
+
+    .department-setup-note {
+      margin-bottom: 16px;
+      padding: 13px 15px;
+      border: 1px solid #bfdbfe;
+      border-radius: 11px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .department-setup-note ol {
+      margin: 8px 0 8px 18px;
+      padding: 0;
+    }
+
+    .department-setup-note p {
+      margin-top: 7px;
+      color: #475569;
+    }
+
+    .department-user-status {
+      justify-content: flex-end;
+    }
+
+    .portal-user-form-actions {
+      justify-content: flex-end;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .portal-user-list-section {
+      margin-top: 18px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+    }
+
+    .portal-user-list-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
+
+    .portal-user-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .portal-user-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .portal-user-list-meta {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+      color: #475569;
+      font-size: 12px;
+    }
+
+    .portal-user-list-meta strong {
+      color: #0f172a;
+      font-size: 13px;
+    }
+
+    .portal-user-list-actions {
+      display: flex;
+      flex-shrink: 0;
+      gap: 6px;
+    }
+
+    .portal-user-list-actions .btn {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 11px;
+    }
+
+    .portal-user-list-empty {
+      padding: 18px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      color: #64748b;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .department-migration-button {
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .department-migration-button.is-enabled {
+      border-color: #86efac;
+      color: #166534;
+      background: #f0fdf4;
+    }
+
+    @media (max-width: 680px) {
+      .header-actions {
+        gap: 5px;
+      }
+
+      .header-actions .admin-header-btn {
+        min-height: 36px;
+        padding: 0 9px;
+        font-size: 11px;
+      }
+
+      .department-access-options {
+        grid-template-columns: 1fr;
+      }
+
+      .department-access-all {
+        grid-column: auto;
+      }
+
+      .portal-user-list-item {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .portal-user-list-actions {
+        width: 100%;
+      }
+
+      .portal-user-list-actions .btn {
+        flex: 1;
+      }
     }
 
     .admin-security-button {
@@ -2592,6 +2791,137 @@
     }
   </style>
 
+  <!-- COMPACT PREMIUM V2 OVERRIDES -->
+  <style id="compact-premium-v2">
+    /* Reduce both card dimensions while preserving the existing card content and behavior. */
+    .app-grid {
+      width: 100%;
+      max-width: 1180px;
+      margin-inline: auto;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .app-card {
+      min-width: 0;
+      min-height: 188px;
+      padding: 11px;
+      border-radius: 17px;
+    }
+
+    .app-card-top {
+      gap: 8px;
+    }
+
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      font-size: 22px;
+    }
+
+    .app-status-stack {
+      gap: 4px;
+    }
+
+    .app-status-stack .status-badge {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+
+    .app-display-number {
+      min-height: 17px;
+      padding: 1px 7px;
+      font-size: 9px;
+    }
+
+    .app-card h3 {
+      margin-top: 9px;
+      font-size: 14.5px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .app-category {
+      margin-top: 3px;
+      font-size: 10.5px;
+      line-height: 1.25;
+    }
+
+    .app-description {
+      margin-top: 6px;
+      font-size: 11.5px;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    .app-card-bottom {
+      padding-top: 8px;
+      gap: 7px;
+    }
+
+    .app-version {
+      font-size: 9.5px;
+    }
+
+    .app-card .btn {
+      min-height: 36px;
+      padding-inline: 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* Keep card width close to 300px on narrower desktop/tablet layouts. */
+    @media (max-width: 1350px) {
+      .app-grid {
+        max-width: 920px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 850px) {
+      .app-grid {
+        max-width: 620px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .app-card {
+        min-height: 188px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-grid {
+        max-width: 370px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .app-card {
+        min-height: 178px;
+        padding: 12px;
+      }
+
+      .app-card .btn {
+        min-height: 42px;
+        padding-inline: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app-card,
+      .app-card::before,
+      .app-card::after,
+      .app-icon,
+      .app-card .btn {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -2626,13 +2956,26 @@
 
       </div>
 
-      <button
-        type="button"
-        class="admin-header-btn"
-        id="adminLoginButton"
-      >
-        🔐 Admin
-      </button>
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="admin-header-btn portal-user-header-btn"
+          id="portalUserLoginButton"
+          title="Login karyawan berdasarkan departemen"
+        >
+          👤 Login Karyawan
+        </button>
+
+        <button
+          type="button"
+          class="admin-header-btn"
+          id="adminLoginButton"
+        >
+          🔐 Admin
+        </button>
+
+      </div>
 
     </div>
 
@@ -2937,6 +3280,38 @@
 
 
   <!-- =====================================================
+       EMPLOYEE LOGIN MODAL
+  ====================================================== -->
+
+  <div class="modal-overlay" id="portalUserLoginModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Login Karyawan</h2>
+        <button type="button" class="modal-close" data-close-modal="portalUserLoginModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="login-info">
+          <div class="login-icon">👤</div>
+          <h3>Akses Berdasarkan Departemen</h3>
+          <p>Gunakan akun karyawan yang sudah didaftarkan oleh Admin Portal.</p>
+        </div>
+        <form id="portalUserLoginForm">
+          <div class="form-group">
+            <label class="form-label" for="portalUserLoginEmail">Email</label>
+            <input type="email" id="portalUserLoginEmail" class="form-control" autocomplete="username" maxlength="150" required placeholder="nama@perusahaan.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="portalUserLoginPassword">Password</label>
+            <input type="password" id="portalUserLoginPassword" class="form-control" autocomplete="current-password" maxlength="200" required placeholder="Masukkan password">
+          </div>
+          <button type="submit" class="btn btn-primary" id="portalUserLoginSubmitButton" style="width:100%;">🔑 Login Karyawan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================
        ADMIN DASHBOARD
   ====================================================== -->
 
@@ -2997,6 +3372,22 @@
               id="refreshAdminButton"
             >
               ↻ Refresh
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="portalUserManagementButton"
+            >
+              👥 User & Departemen
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary department-migration-button"
+              id="departmentAccessMigrationButton"
+            >
+              🔐 Aktifkan Akses Departemen
             </button>
 
             <button
@@ -3195,6 +3586,90 @@
 
     </div>
 
+  </div>
+
+
+  <!-- =====================================================
+       PORTAL USER MANAGEMENT MODAL
+  ====================================================== -->
+
+  <div class="modal-overlay" id="portalUserManagementModal">
+    <div class="modal portal-user-modal">
+      <div class="modal-header">
+        <div>
+          <h2>Manajemen User & Departemen</h2>
+          <div class="admin-user">Kelola akun portal dan pembagian akses aplikasi</div>
+        </div>
+        <button type="button" class="modal-close" data-close-modal="portalUserManagementModal">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="department-setup-note">
+          <strong>Langkah pendaftaran akun</strong>
+          <ol>
+            <li>Buat akun Email/Password karyawan di Firebase Authentication.</li>
+            <li>Salin UID dari akun tersebut.</li>
+            <li>Masukkan UID, nama, email, dan departemen di formulir ini.</li>
+          </ol>
+          <p>Portal tidak membuat atau menyimpan password karyawan. Password dikelola oleh Firebase Authentication.</p>
+        </div>
+
+        <form id="portalUserManagementForm">
+          <div class="form-group">
+            <label class="form-label" for="portalUserUid">Firebase Auth UID *</label>
+            <input type="text" id="portalUserUid" class="form-control" maxlength="128" required placeholder="Tempel UID dari Firebase Authentication">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="portalUserName">Nama Karyawan *</label>
+              <input type="text" id="portalUserName" class="form-control" maxlength="100" required placeholder="Nama lengkap">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="portalUserEmail">Email Akun *</label>
+              <input type="email" id="portalUserEmail" class="form-control" maxlength="150" required placeholder="Email akun Firebase">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="portalUserDepartment">Departemen *</label>
+              <select id="portalUserDepartment" class="form-control" required>
+                <option value="Purchasing">Purchasing</option>
+                <option value="Warehouse">Warehouse</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Finance">Finance</option>
+                <option value="HR">HR</option>
+                <option value="IT">IT</option>
+                <option value="Management">Management</option>
+              </select>
+            </div>
+            <div class="form-group department-user-status">
+              <label class="form-label">Status Akun</label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="portalUserActive" checked>
+                <span>Akun aktif</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-footer portal-user-form-actions">
+            <button type="button" class="btn btn-secondary" id="portalUserResetButton">Bersihkan</button>
+            <button type="submit" class="btn btn-primary" id="portalUserSaveButton">💾 Simpan User</button>
+          </div>
+        </form>
+
+        <div class="portal-user-list-section">
+          <div class="portal-user-list-heading">
+            <strong>Daftar User Portal</strong>
+            <button type="button" class="btn btn-secondary" id="refreshPortalUsersButton">↻ Refresh</button>
+          </div>
+          <div id="portalUserList" class="portal-user-list">
+            <div class="portal-user-list-empty">Memuat user...</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -3834,6 +4309,33 @@
           </div>
 
 
+          <!-- DEPARTMENT ACCESS -->
+
+          <div class="form-group">
+
+            <label class="form-label">Hak Akses Departemen</label>
+
+            <div class="department-access-options" id="applicationDepartmentAccess">
+              <label class="department-access-option department-access-all">
+                <input type="checkbox" data-app-department="ALL" checked>
+                <span>Semua Departemen (Publik)</span>
+              </label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="Purchasing"><span>Purchasing</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="Warehouse"><span>Warehouse</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="Maintenance"><span>Maintenance</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="Finance"><span>Finance</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="HR"><span>HR</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="IT"><span>IT</span></label>
+              <label class="department-access-option"><input type="checkbox" data-app-department="Management"><span>Management</span></label>
+            </div>
+
+            <div class="form-help">
+              Pilih Semua Departemen agar aplikasi dapat dilihat tanpa login. Untuk membatasi akses, pilih satu atau beberapa departemen.
+            </div>
+
+          </div>
+
+
           <!-- ACTIVE -->
 
           <label class="checkbox-row">
@@ -3926,6 +4428,7 @@
       setDoc,
       updateDoc,
       deleteDoc,
+      writeBatch,
       doc,
       serverTimestamp,
       onSnapshot
@@ -3972,6 +4475,25 @@
 
     let currentAdmin = false;
 
+    let currentPortalProfile = null;
+    let unsubscribePortalProfile = null;
+    let authStateCheckVersion = 0;
+
+    let departmentAccessEnabled = false;
+    let portalUsersCache = [];
+    let editingPortalUserId = null;
+    let publicApplicationSourceData = new Map();
+
+    const PORTAL_DEPARTMENTS = Object.freeze([
+      "Purchasing",
+      "Warehouse",
+      "Maintenance",
+      "Finance",
+      "HR",
+      "IT",
+      "Management"
+    ]);
+
     let publicApplications = [];
 
     let adminApplications = [];
@@ -4003,7 +4525,7 @@
 
     let editingApplicationId = null;
 
-    let unsubscribePublicApplications = null;
+    let unsubscribePublicApplications = [];
 
 
     /* =====================================================
@@ -4124,9 +4646,12 @@
 
         firebaseReady = true;
 
-        listenPublicApplications();
-
-        observeAuthentication();
+        loadDepartmentAccessSettings()
+          .catch((error) => {
+            console.warn("Department access config unavailable; using legacy public catalogue.", error);
+            departmentAccessEnabled = false;
+          })
+          .finally(() => observeAuthentication());
 
       } catch (error) {
 
@@ -4147,6 +4672,181 @@
 
 
     /* =====================================================
+       DEPARTMENT ACCESS SETTINGS
+    ====================================================== */
+
+    async function loadDepartmentAccessSettings() {
+
+      if (!db) {
+        departmentAccessEnabled = false;
+        return false;
+      }
+
+      try {
+        const accessSnapshot = await getDoc(
+          doc(db, "portalConfig", "accessControl")
+        );
+
+        departmentAccessEnabled =
+          accessSnapshot.exists() &&
+          accessSnapshot.data().enabled === true;
+
+        updateDepartmentAccessButton();
+        return departmentAccessEnabled;
+      } catch (error) {
+        // Backward compatible: before the new rules/config are deployed,
+        // the portal keeps its existing public-catalogue mode.
+        departmentAccessEnabled = false;
+        console.warn("Department access settings could not be read:", error);
+        updateDepartmentAccessButton();
+        return false;
+      }
+
+    }
+
+
+    function updateDepartmentAccessButton() {
+
+      const button = $("departmentAccessMigrationButton");
+      if (!button) return;
+
+      if (departmentAccessEnabled) {
+        button.textContent = "✓ Akses Departemen Aktif";
+        button.disabled = true;
+        button.classList.add("is-enabled");
+        button.title = "Pembatasan akses departemen sudah aktif.";
+      } else {
+        button.textContent = "🔐 Aktifkan Akses Departemen";
+        button.disabled = false;
+        button.classList.remove("is-enabled");
+        button.title = "Migrasikan katalog lama dan aktifkan akses per departemen.";
+      }
+
+    }
+
+
+    function updateHeaderAuthButtons() {
+
+      const userButton = $("portalUserLoginButton");
+      const adminButton = $("adminLoginButton");
+
+      if (userButton) {
+        if (currentAdmin) {
+          userButton.style.display = "none";
+        } else {
+          userButton.style.display = "inline-flex";
+          userButton.textContent = currentPortalProfile
+            ? `👤 ${currentPortalProfile.name || "Karyawan"} · Keluar`
+            : "👤 Login Karyawan";
+          userButton.title = currentPortalProfile
+            ? `Departemen: ${currentPortalProfile.department}. Klik untuk keluar.`
+            : "Login untuk melihat aplikasi sesuai departemen.";
+        }
+      }
+
+      if (adminButton) {
+        adminButton.textContent = currentAdmin ? "🔐 Admin Aktif" : "🔐 Admin";
+      }
+
+    }
+
+
+    async function getActivePortalProfile(user) {
+
+      if (!user || !db) return null;
+
+      const profileSnapshot = await getDoc(
+        doc(db, "portalUsers", user.uid)
+      );
+
+      if (!profileSnapshot.exists()) return null;
+
+      const profile = profileSnapshot.data();
+      const emailMatches = !profile.email || !user.email ||
+        String(profile.email).trim().toLowerCase() === String(user.email).trim().toLowerCase();
+
+      if (
+        profile.active !== true ||
+        !PORTAL_DEPARTMENTS.includes(profile.department) ||
+        !emailMatches
+      ) {
+        return null;
+      }
+
+      return {
+        uid: user.uid,
+        name: String(profile.name || user.displayName || "Karyawan"),
+        email: String(profile.email || user.email || ""),
+        department: profile.department,
+        active: true
+      };
+
+    }
+
+
+    function stopPortalProfileListener() {
+      if (typeof unsubscribePortalProfile === "function") {
+        unsubscribePortalProfile();
+      }
+      unsubscribePortalProfile = null;
+    }
+
+
+    function listenPortalUserProfile(user) {
+
+      stopPortalProfileListener();
+      if (!user || !db) return;
+
+      unsubscribePortalProfile = onSnapshot(
+        doc(db, "portalUsers", user.uid),
+        async (snapshot) => {
+          if (!snapshot.exists()) {
+            showToast("Profil akses portal Anda sudah dihapus.", "warning");
+            await signOut(auth);
+            return;
+          }
+
+          const profile = snapshot.data();
+          const emailMatches = !profile.email || !user.email ||
+            String(profile.email).trim().toLowerCase() === String(user.email).trim().toLowerCase();
+
+          if (
+            profile.active !== true ||
+            !PORTAL_DEPARTMENTS.includes(profile.department) ||
+            !emailMatches
+          ) {
+            showToast("Akses portal Anda dinonaktifkan oleh Admin.", "warning");
+            await signOut(auth);
+            return;
+          }
+
+          const previousDepartment = currentPortalProfile?.department || "";
+          currentPortalProfile = {
+            uid: user.uid,
+            name: String(profile.name || user.displayName || "Karyawan"),
+            email: String(profile.email || user.email || ""),
+            department: profile.department,
+            active: true
+          };
+          currentUser = user;
+          currentAdmin = false;
+          updateHeaderAuthButtons();
+
+          if (previousDepartment !== currentPortalProfile.department) {
+            listenPublicApplications();
+          }
+        },
+        async (error) => {
+          console.error("Portal user profile listener error:", error);
+          showToast("Tidak dapat memverifikasi akses departemen. Silakan login kembali.", "error");
+          await signOut(auth);
+        }
+      );
+
+    }
+
+
+    /* =====================================================
        AUTH STATE
     ====================================================== */
 
@@ -4155,52 +4855,58 @@
       onAuthStateChanged(
         auth,
         async (user) => {
-
-          currentUser =
-            user || null;
-
+          const checkVersion = ++authStateCheckVersion;
+          currentUser = user || null;
 
           if (!user) {
-
+            stopPortalProfileListener();
             currentAdmin = false;
-
+            currentPortalProfile = null;
+            updateHeaderAuthButtons();
+            listenPublicApplications();
             return;
-
           }
-
 
           try {
+            const adminStatus = await checkAdmin(user);
+            if (checkVersion !== authStateCheckVersion) return;
 
-            currentAdmin =
-              await checkAdmin(
-                user
-              );
-
-
-            if (!currentAdmin) {
-
-              await signOut(
-                auth
-              );
-
-              showToast(
-                "Akun ini tidak memiliki akses Admin.",
-                "warning"
-              );
-
+            if (adminStatus) {
+              stopPortalProfileListener();
+              currentAdmin = true;
+              currentPortalProfile = null;
+              updateHeaderAuthButtons();
+              listenPublicApplications();
+              return;
             }
 
-          } catch (error) {
+            const portalProfile = await getActivePortalProfile(user);
+            if (checkVersion !== authStateCheckVersion) return;
 
-            console.error(
-              "Admin verification error:",
-              error
-            );
+            if (!portalProfile) {
+              currentAdmin = false;
+              currentPortalProfile = null;
+              updateHeaderAuthButtons();
+              await signOut(auth);
+              showToast("Akun ini belum terdaftar atau tidak aktif di Portal.", "warning");
+              return;
+            }
 
             currentAdmin = false;
+            currentPortalProfile = portalProfile;
+            updateHeaderAuthButtons();
+            listenPortalUserProfile(user);
+            listenPublicApplications();
 
+          } catch (error) {
+            if (checkVersion !== authStateCheckVersion) return;
+            console.error("Portal authentication verification error:", error);
+            currentAdmin = false;
+            currentPortalProfile = null;
+            updateHeaderAuthButtons();
+            await signOut(auth);
+            showToast("Verifikasi akun portal gagal. Periksa Firestore Rules.", "error");
           }
-
         }
       );
 
@@ -4278,93 +4984,100 @@
 
     function listenPublicApplications() {
 
-      if (!db) {
-        return;
-      }
+      if (!db) return;
 
-
-      if (
-        unsubscribePublicApplications
-      ) {
-
-        unsubscribePublicApplications();
-
-        unsubscribePublicApplications =
-          null;
-
-      }
-
+      unsubscribePublicApplications.forEach((unsubscribe) => {
+        if (typeof unsubscribe === "function") unsubscribe();
+      });
+      unsubscribePublicApplications = [];
+      publicApplicationSourceData = new Map();
 
       showLoadingState();
 
+      const applicationsCollection = collection(db, "applications");
 
-      const applicationsQuery =
+      const rebuildPublicApplications = () => {
+        const merged = new Map();
+        publicApplicationSourceData.forEach((sourceMap) => {
+          sourceMap.forEach((application, applicationId) => {
+            merged.set(applicationId, application);
+          });
+        });
+
+        publicApplications = [...merged.values()].filter(
+          (application) => application.isActive === true
+        );
+        sortApplications(publicApplications);
+        publicApplications.forEach((application, index) => {
+          application.displayNo = index + 1;
+        });
+        buildCategoryFilter();
+        renderPublicApplications();
+      };
+
+      const subscribeSource = (sourceKey, sourceQuery) => {
+        const unsubscribe = onSnapshot(
+          sourceQuery,
+          (snapshot) => {
+            const sourceMap = new Map();
+            snapshot.docs.forEach((documentSnapshot) => {
+              sourceMap.set(documentSnapshot.id, {
+                id: documentSnapshot.id,
+                ...documentSnapshot.data()
+              });
+            });
+            publicApplicationSourceData.set(sourceKey, sourceMap);
+            rebuildPublicApplications();
+          },
+          (error) => {
+            console.error(`Application listener error (${sourceKey}):`, error);
+            showErrorState(getFirestoreErrorMessage(error));
+          }
+        );
+        unsubscribePublicApplications.push(unsubscribe);
+      };
+
+      const activeFilter = where("isActive", "==", true);
+
+      // During the migration window the existing public catalogue remains intact.
+      if (!departmentAccessEnabled) {
+        subscribeSource(
+          "legacy-public",
+          query(applicationsCollection, activeFilter)
+        );
+        return;
+      }
+
+      // Admin continues to see the complete catalogue, including restricted applications.
+      if (currentAdmin) {
+        subscribeSource(
+          "admin-all",
+          query(applicationsCollection, activeFilter)
+        );
+        return;
+      }
+
+      // Public applications remain visible without a staff login.
+      subscribeSource(
+        "department-public",
         query(
-          collection(
-            db,
-            "applications"
-          ),
+          applicationsCollection,
+          activeFilter,
+          where("accessDepartments", "array-contains", "ALL")
+        )
+      );
 
-          where(
-            "isActive",
-            "==",
-            true
+      // Staff also see applications assigned to their verified department.
+      if (currentPortalProfile && PORTAL_DEPARTMENTS.includes(currentPortalProfile.department)) {
+        subscribeSource(
+          `department-${currentPortalProfile.department}`,
+          query(
+            applicationsCollection,
+            activeFilter,
+            where("accessDepartments", "array-contains", currentPortalProfile.department)
           )
         );
-
-
-      unsubscribePublicApplications =
-        onSnapshot(
-
-          applicationsQuery,
-
-          (snapshot) => {
-
-            publicApplications =
-              snapshot.docs.map(
-                (documentSnapshot) => ({
-
-                  id:
-                    documentSnapshot.id,
-
-                  ...documentSnapshot.data()
-
-                })
-              );
-
-
-            sortApplications(
-              publicApplications
-            );
-
-            // Presentation-only numbering for the complete public catalogue.
-            // It remains stable during search/filter and follows Admin sort order.
-            publicApplications.forEach((application, index) => {
-              application.displayNo = index + 1;
-            });
-
-            buildCategoryFilter();
-
-            renderPublicApplications();
-
-          },
-
-          (error) => {
-
-            console.error(
-              "Public applications listener error:",
-              error
-            );
-
-            showErrorState(
-              getFirestoreErrorMessage(
-                error
-              )
-            );
-
-          }
-
-        );
+      }
 
     }
 
@@ -4483,6 +5196,15 @@
 
           $("emptyState").style.display =
             "flex";
+
+          const emptyDescription = $("emptyState").querySelector("p");
+          if (emptyDescription && departmentAccessEnabled) {
+            emptyDescription.textContent = currentPortalProfile
+              ? `Belum ada aplikasi yang diberikan untuk departemen ${currentPortalProfile.department}. Hubungi Admin Portal untuk pengaturan akses.`
+              : "Belum ada aplikasi publik. Login Karyawan untuk melihat aplikasi sesuai departemen Anda.";
+          } else if (emptyDescription) {
+            emptyDescription.textContent = "Belum ada aplikasi yang tersedia di portal. Admin dapat menambahkan aplikasi melalui Dashboard Admin.";
+          }
 
         }
 
@@ -4941,6 +5663,10 @@
         currentAdmin =
           true;
 
+        currentPortalProfile = null;
+        stopPortalProfileListener();
+        updateHeaderAuthButtons();
+
 
         closeModal(
           "loginModal"
@@ -4987,6 +5713,319 @@
 
 
     /* =====================================================
+       EMPLOYEE LOGIN & PORTAL USER MANAGEMENT
+    ====================================================== */
+
+    async function handlePortalUserLogin(event) {
+      event.preventDefault();
+
+      if (!firebaseReady || !auth) {
+        showToast("Firebase belum siap.", "error");
+        return;
+      }
+
+      const email = $("portalUserLoginEmail").value.trim();
+      const password = $("portalUserLoginPassword").value;
+      const button = $("portalUserLoginSubmitButton");
+
+      if (!email || !password) {
+        showToast("Email dan password wajib diisi.", "warning");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Memverifikasi...";
+
+      try {
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        const profile = await getActivePortalProfile(credential.user);
+
+        if (!profile) {
+          await signOut(auth);
+          throw new Error("Akun belum didaftarkan atau statusnya tidak aktif. Hubungi Admin Portal.");
+        }
+
+        currentUser = credential.user;
+        currentAdmin = false;
+        currentPortalProfile = profile;
+        updateHeaderAuthButtons();
+        listenPortalUserProfile(credential.user);
+        listenPublicApplications();
+        closeModal("portalUserLoginModal");
+        $("portalUserLoginForm").reset();
+        showToast(`Login berhasil. Departemen: ${profile.department}.`, "success");
+      } catch (error) {
+        console.error("Portal user login error:", error);
+        showToast(
+          error.message && error.message.includes("belum didaftarkan")
+            ? error.message
+            : getAuthErrorMessage(error),
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent = "🔑 Login Karyawan";
+      }
+    }
+
+
+    async function handlePortalUserLogout() {
+      try {
+        if (auth) await signOut(auth);
+        stopPortalProfileListener();
+        currentUser = null;
+        currentPortalProfile = null;
+        currentAdmin = false;
+        updateHeaderAuthButtons();
+        listenPublicApplications();
+        showToast("Anda telah keluar dari Portal Karyawan.", "success");
+      } catch (error) {
+        console.error("Portal user logout error:", error);
+        showToast("Gagal keluar dari akun.", "error");
+      }
+    }
+
+
+    async function openPortalUserManagement() {
+      if (!currentAdmin || !db) {
+        showToast("Hanya Admin yang dapat mengelola user portal.", "error");
+        return;
+      }
+
+      clearPortalUserForm();
+      openModal("portalUserManagementModal");
+      await loadPortalUsers();
+    }
+
+
+    async function loadPortalUsers() {
+      if (!currentAdmin || !db) return;
+      $("portalUserList").innerHTML = '<div class="portal-user-list-empty">Memuat user...</div>';
+
+      try {
+        const snapshot = await getDocs(collection(db, "portalUsers"));
+        portalUsersCache = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data()
+        })).sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "id"));
+        renderPortalUserList();
+      } catch (error) {
+        console.error("Load portal users error:", error);
+        $("portalUserList").innerHTML = `<div class="portal-user-list-empty">${escapeHtml(getFirestoreErrorMessage(error))}</div>`;
+      }
+    }
+
+
+    function renderPortalUserList() {
+      const container = $("portalUserList");
+      if (!container) return;
+
+      if (!portalUsersCache.length) {
+        container.innerHTML = '<div class="portal-user-list-empty">Belum ada user yang didaftarkan.</div>';
+        return;
+      }
+
+      container.innerHTML = portalUsersCache.map((user) => {
+        const active = user.active === true;
+        const uid = escapeAttribute(user.id);
+        return `
+          <div class="portal-user-list-item">
+            <div class="portal-user-list-meta">
+              <strong>${escapeHtml(user.name || "Tanpa nama")} · ${escapeHtml(user.department || "-")}</strong>
+              <span>${escapeHtml(user.email || "-")}</span>
+              <span>UID: ${escapeHtml(user.id)}</span>
+              <span style="color:${active ? "#15803d" : "#b91c1c"};font-weight:700;">${active ? "AKTIF" : "NONAKTIF"}</span>
+            </div>
+            <div class="portal-user-list-actions">
+              <button type="button" class="btn btn-secondary" data-edit-portal-user="${uid}">Edit</button>
+              <button type="button" class="btn ${active ? "btn-secondary" : "btn-primary"}" data-toggle-portal-user="${uid}">${active ? "Nonaktifkan" : "Aktifkan"}</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+
+    function clearPortalUserForm() {
+      editingPortalUserId = null;
+      $("portalUserManagementForm").reset();
+      $("portalUserUid").readOnly = false;
+      $("portalUserActive").checked = true;
+      $("portalUserDepartment").value = "Purchasing";
+      $("portalUserSaveButton").textContent = "💾 Simpan User";
+    }
+
+
+    function editPortalUser(uid) {
+      const user = portalUsersCache.find((item) => item.id === uid);
+      if (!user) return;
+
+      editingPortalUserId = uid;
+      $("portalUserUid").value = uid;
+      $("portalUserUid").readOnly = true;
+      $("portalUserName").value = user.name || "";
+      $("portalUserEmail").value = user.email || "";
+      $("portalUserDepartment").value = PORTAL_DEPARTMENTS.includes(user.department)
+        ? user.department
+        : "Purchasing";
+      $("portalUserActive").checked = user.active === true;
+      $("portalUserSaveButton").textContent = "💾 Perbarui User";
+      $("portalUserName").focus();
+    }
+
+
+    async function savePortalUserProfile(event) {
+      event.preventDefault();
+      if (!currentAdmin || !db) {
+        showToast("Akses Admin diperlukan.", "error");
+        return;
+      }
+
+      const uid = $("portalUserUid").value.trim();
+      const name = $("portalUserName").value.trim();
+      const email = $("portalUserEmail").value.trim().toLowerCase();
+      const department = $("portalUserDepartment").value;
+      const active = $("portalUserActive").checked;
+
+      if (!uid || !name || !email || !PORTAL_DEPARTMENTS.includes(department)) {
+        showToast("UID, nama, email, dan departemen wajib diisi dengan benar.", "warning");
+        return;
+      }
+
+      const button = $("portalUserSaveButton");
+      button.disabled = true;
+      button.textContent = "Menyimpan...";
+
+      try {
+        const profileRef = doc(db, "portalUsers", uid);
+        const existing = portalUsersCache.find((item) => item.id === uid);
+        const payload = {
+          name,
+          email,
+          department,
+          active,
+          updatedAt: serverTimestamp(),
+          updatedBy: currentUser.uid
+        };
+
+        if (existing || editingPortalUserId === uid) {
+          await updateDoc(profileRef, payload);
+        } else {
+          await setDoc(profileRef, {
+            ...payload,
+            createdAt: serverTimestamp(),
+            createdBy: currentUser.uid
+          });
+        }
+
+        showToast("Profil user portal berhasil disimpan.", "success");
+        clearPortalUserForm();
+        await loadPortalUsers();
+      } catch (error) {
+        console.error("Save portal user error:", error);
+        showToast(getFirestoreErrorMessage(error), "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = editingPortalUserId ? "💾 Perbarui User" : "💾 Simpan User";
+      }
+    }
+
+
+    async function togglePortalUserActive(uid) {
+      if (!currentAdmin || !db) return;
+      const user = portalUsersCache.find((item) => item.id === uid);
+      if (!user) return;
+
+      const nextActive = user.active !== true;
+      const action = nextActive ? "mengaktifkan" : "menonaktifkan";
+      if (!window.confirm(`Apakah Anda yakin ingin ${action} akses ${user.name || user.email}?`)) return;
+
+      try {
+        await updateDoc(doc(db, "portalUsers", uid), {
+          active: nextActive,
+          updatedAt: serverTimestamp(),
+          updatedBy: currentUser.uid
+        });
+        showToast(nextActive ? "User berhasil diaktifkan." : "User berhasil dinonaktifkan.", "success");
+        await loadPortalUsers();
+      } catch (error) {
+        console.error("Toggle portal user error:", error);
+        showToast(getFirestoreErrorMessage(error), "error");
+      }
+    }
+
+
+    async function migrateDepartmentAccess() {
+      if (!currentAdmin || !db) {
+        showToast("Hanya Admin yang dapat mengaktifkan akses departemen.", "error");
+        return;
+      }
+
+      await loadDepartmentAccessSettings();
+      if (departmentAccessEnabled) {
+        updateDepartmentAccessButton();
+        showToast("Akses departemen sudah aktif.", "info");
+        return;
+      }
+
+      const confirmed = window.confirm(
+        "Portal akan menambahkan accessDepartments=['ALL'] pada aplikasi lama yang belum memiliki pengaturan akses. Ini menjaga semua aplikasi lama tetap terlihat oleh semua pengunjung. Setelah itu, pembatasan per departemen diaktifkan. Lanjutkan?"
+      );
+      if (!confirmed) return;
+
+      const button = $("departmentAccessMigrationButton");
+      button.disabled = true;
+      button.textContent = "Memigrasikan...";
+
+      try {
+        const snapshot = await getDocs(collection(db, "applications"));
+        const docsToMigrate = snapshot.docs.filter((item) => {
+          const access = item.data().accessDepartments;
+          return !Array.isArray(access) || access.length === 0;
+        });
+
+        // Small batches keep Firestore Security Rules document-access calls
+        // safely below the per-request limit when Admin/config docs are checked.
+        for (let start = 0; start < docsToMigrate.length; start += 5) {
+          const batch = writeBatch(db);
+          docsToMigrate.slice(start, start + 5).forEach((item) => {
+            batch.update(item.ref, { accessDepartments: ["ALL"] });
+          });
+          await batch.commit();
+        }
+
+        await setDoc(
+          doc(db, "portalConfig", "accessControl"),
+          {
+            enabled: true,
+            enabledAt: serverTimestamp(),
+            enabledBy: currentUser.uid,
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        departmentAccessEnabled = true;
+        updateDepartmentAccessButton();
+        listenPublicApplications();
+        await loadAdminApplications();
+        showToast(
+          `Akses departemen aktif. ${docsToMigrate.length} aplikasi lama dipertahankan untuk semua departemen.`,
+          "success"
+        );
+      } catch (error) {
+        console.error("Department access migration error:", error);
+        button.disabled = false;
+        button.textContent = "🔐 Aktifkan Akses Departemen";
+        showToast(
+          `${getFirestoreErrorMessage(error)} Pastikan Firestore Rules Tahap 2 sudah dipasang, lalu coba lagi.`,
+          "error"
+        );
+      }
+    }
+
+
+    /* =====================================================
        OPEN ADMIN DASHBOARD
     ====================================================== */
 
@@ -5016,7 +6055,8 @@
         "adminModal"
       );
 
-
+      await loadDepartmentAccessSettings();
+      updateDepartmentAccessButton();
       await loadAdminApplications();
 
     }
@@ -5528,6 +6568,60 @@
 
 
     /* =====================================================
+       APPLICATION DEPARTMENT SELECTION
+    ====================================================== */
+
+    function setApplicationDepartmentSelection(departments) {
+      const values = Array.isArray(departments) && departments.length
+        ? departments
+        : ["ALL"];
+      const isAll = values.includes("ALL");
+
+      document.querySelectorAll("[data-app-department]").forEach((checkbox) => {
+        const department = checkbox.dataset.appDepartment;
+        checkbox.checked = isAll ? department === "ALL" : values.includes(department);
+        checkbox.disabled = isAll && department !== "ALL";
+      });
+    }
+
+
+    function getApplicationDepartmentSelection() {
+      const selected = [...document.querySelectorAll("[data-app-department]:checked")]
+        .map((checkbox) => checkbox.dataset.appDepartment);
+      if (selected.includes("ALL")) return ["ALL"];
+      return selected.filter((department) => PORTAL_DEPARTMENTS.includes(department));
+    }
+
+
+    function handleApplicationDepartmentChange(event) {
+      const target = event.target;
+      if (!target.matches("[data-app-department]")) return;
+
+      if (target.dataset.appDepartment === "ALL" && target.checked) {
+        setApplicationDepartmentSelection(["ALL"]);
+        return;
+      }
+
+      if (target.dataset.appDepartment === "ALL" && !target.checked) {
+        document.querySelectorAll("[data-app-department]").forEach((checkbox) => {
+          if (checkbox.dataset.appDepartment !== "ALL") {
+            checkbox.disabled = false;
+          }
+        });
+        return;
+      }
+
+      if (target.dataset.appDepartment !== "ALL" && target.checked) {
+        const allCheckbox = document.querySelector('[data-app-department="ALL"]');
+        if (allCheckbox) {
+          allCheckbox.checked = false;
+          allCheckbox.disabled = false;
+        }
+      }
+    }
+
+
+    /* =====================================================
        OPEN ADD FORM
     ====================================================== */
 
@@ -5579,6 +6673,7 @@
       $("applicationStatus").value =
         "Aktif";
 
+      setApplicationDepartmentSelection(["ALL"]);
 
       $("applicationIsActive").checked =
         true;
@@ -5768,6 +6863,7 @@
         application.isActive ===
         true;
 
+      setApplicationDepartmentSelection(application.accessDepartments || ["ALL"]);
 
       openModal(
         "applicationFormModal"
@@ -5867,6 +6963,9 @@
         $("applicationIsActive")
           .checked;
 
+      const accessDepartments =
+        getApplicationDepartmentSelection();
+
 
       if (
         !name ||
@@ -5882,6 +6981,15 @@
 
         return;
 
+      }
+
+
+      if (accessDepartments.length === 0) {
+        showToast(
+          "Pilih minimal satu departemen atau Semua Departemen.",
+          "warning"
+        );
+        return;
       }
 
 
@@ -5969,6 +7077,8 @@
           keywords,
 
           isActive,
+
+          accessDepartments,
 
           updatedAt:
             serverTimestamp()
@@ -6302,6 +7412,10 @@
         currentAdmin =
           false;
 
+        currentPortalProfile = null;
+        stopPortalProfileListener();
+        updateHeaderAuthButtons();
+
         credentialRecoverySecret = "";
         securityDocument = null;
         securityRecoveryCode = "";
@@ -6376,6 +7490,37 @@
           "submit",
           handleAdminLogin
         );
+
+      $("portalUserLoginButton")
+        .addEventListener("click", () => {
+          if (currentPortalProfile) {
+            handlePortalUserLogout();
+          } else {
+            openModal("portalUserLoginModal");
+            setTimeout(() => $("portalUserLoginEmail").focus(), 100);
+          }
+        });
+
+      $("portalUserLoginForm")
+        .addEventListener("submit", handlePortalUserLogin);
+
+      $("portalUserManagementButton")
+        .addEventListener("click", openPortalUserManagement);
+
+      $("departmentAccessMigrationButton")
+        .addEventListener("click", migrateDepartmentAccess);
+
+      $("portalUserManagementForm")
+        .addEventListener("submit", savePortalUserProfile);
+
+      $("portalUserResetButton")
+        .addEventListener("click", clearPortalUserForm);
+
+      $("refreshPortalUsersButton")
+        .addEventListener("click", loadPortalUsers);
+
+      $("applicationDepartmentAccess")
+        .addEventListener("change", handleApplicationDepartmentChange);
 
 
       $("searchInput")
@@ -6655,6 +7800,22 @@
 
           }
 
+
+          const editPortalUserButton =
+            event.target.closest("[data-edit-portal-user]");
+
+          if (editPortalUserButton) {
+            editPortalUser(editPortalUserButton.dataset.editPortalUser);
+            return;
+          }
+
+          const togglePortalUserButton =
+            event.target.closest("[data-toggle-portal-user]");
+
+          if (togglePortalUserButton) {
+            togglePortalUserActive(togglePortalUserButton.dataset.togglePortalUser);
+            return;
+          }
 
           const loginButton =
             event.target.closest(
