@@ -2922,6 +2922,41 @@
     }
   </style>
 
+  <!-- TOOLBAR / APPLICATION GRID ALIGNMENT -->
+  <style id="toolbar-grid-alignment">
+    /* Keep the search field and category filter edges aligned with the application grid. */
+    .toolbar {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto 25px;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 12px;
+    }
+
+    /* Match the grid's three-column desktop layout. */
+    @media (max-width: 1350px) {
+      .toolbar {
+        max-width: 920px;
+      }
+    }
+
+    /* Match the grid's tablet width and retain its stacked toolbar controls. */
+    @media (max-width: 850px) {
+      .toolbar {
+        max-width: 620px;
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* Match the single-column mobile grid. */
+    @media (max-width: 600px) {
+      .toolbar {
+        max-width: 370px;
+        gap: 10px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
